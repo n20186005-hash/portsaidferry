@@ -1,3 +1,7 @@
+allowBuilds:
+  esbuild: true
+  workerd: true
+
 supportedArchitectures:
   os:
     - linux
