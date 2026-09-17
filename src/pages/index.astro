@@ -32,7 +32,7 @@ const entity = {
 };
 const googleMapsLink = entity.mapsShareUrl;
 const mapUrl = 'https://www.google.com/maps?q=7856%2BR8F%2C%20El-Gomhoreya%2C%20Port%20Said%2C%20Egypt&output=embed&hl=ar';
-const rating = { value: '4.6', best: '5', count: '10,419', syncedAt: '2026 年 9 月', syncedAtAr: 'سبتمبر 2026' };
+const rating = { value: '4.6', best: '5', count: '10,419', syncedAtAr: 'سبتمبر 2026' };
 const title = 'معدية بورسعيد Port Said Ferry (بورسعيد) - دليل الزائر والموقع | عبور قناة السويس إلى بورفؤاد';
 const description = 'دليل عربي عملي لتجربة Port Said Ferry (معدية بورسعيد) في بورسعيد، محافظة بورسعيد، مصر: الموقع على الخريطة، الوصول، التكلفة، أفضل وقت العبور، المواقف، المطاعم والمعالم القريبة.';
 const faq = [
@@ -137,8 +137,7 @@ const faqJsonLd = {
         <div class="stat"><strong>{rating.value} / {rating.best}</strong><span>{rating.count} تقييمًا على Google Maps</span></div>
       </div>
       <p class="source-note hero-source">
-        <span lang="ar">التقييم وعدد التقييمات من آراء مستخدمي Google Maps، آخر مزامنة {rating.syncedAtAr}.</span>
-        <span lang="zh">评分与评价数同步自谷歌地图（Google Maps）用户评价 · {rating.syncedAt} · <a href={googleMapsLink} target="_blank" rel="noopener noreferrer">点击查看谷歌地图全部评价↗</a></span>
+        <span lang="ar">التقييم وعدد التقييمات من آراء مستخدمي Google Maps، آخر مزامنة {rating.syncedAtAr} · <a href={googleMapsLink} target="_blank" rel="noopener noreferrer">عرض جميع التقييمات على Google Maps ↗</a></span>
       </p>
     </div>
   </header>
@@ -171,12 +170,10 @@ const faqJsonLd = {
           <div class="rating-meta">
             <p>يقدّم هذا القسم ملخصًا لأرقام التقييم المنشورة على Google Maps فقط، ولا يعرض نصوص المراجعات؛ جميع آراء المستخدمين معروضة في مصدرها الأصلي عبر الرابط أدناه.</p>
             <p class="source-note">
-              <span lang="zh">同步自 Google 地图用户评价，同步时间 {rating.syncedAt}；版权归原作者与 Google 地图所有</span>
               <span lang="ar">التقييمات منسوخة من آراء مستخدمي Google Maps، وقت المزامنة: {rating.syncedAtAr}؛ حقوق النشر تعود لأصحابها الأصليين ولـ Google Maps.</span>
             </p>
             <div class="hero-actions">
-              <a class="btn btn-primary" href={googleMapsLink} target="_blank" rel="noopener noreferrer" aria-label={`عرض جميع تقييمات ${entity.fullName} على Google Maps`}>在谷歌地图查看全部评价</a>
-              <a class="btn btn-ghost" href={googleMapsLink} target="_blank" rel="noopener noreferrer">عرض جميع التقييمات على Google Maps ↗</a>
+              <a class="btn btn-primary" href={googleMapsLink} target="_blank" rel="noopener noreferrer" aria-label={`عرض جميع تقييمات ${entity.fullName} على Google Maps`}>عرض جميع التقييمات على Google Maps ↗</a>
             </div>
           </div>
         </div>
@@ -275,7 +272,7 @@ const faqJsonLd = {
         <div class="kicker">المصادر</div>
         <h2>مصادر الصور والمعلومات</h2>
         <ul class="source-list credits">
-          <li><strong>التقييم · 评价:</strong> <span lang="zh">评价 · 同步时间 {rating.syncedAt} · 同步自 Google 地图用户评价；版权归原作者与 Google 地图所有</span> <span lang="ar">التقييم وعدد التقييمات ({rating.value} / {rating.best} · {rating.count}) مزامنة من آراء مستخدمي Google Maps بتاريخ {rating.syncedAtAr}، وحقوق النشر تعود لأصحابها الأصليين ولـ Google Maps.</span> <a href={googleMapsLink} target="_blank" rel="noopener noreferrer">点击查看谷歌地图全部评价↗</a></li>
+          <li><strong>التقييم:</strong> <span lang="ar">التقييم وعدد التقييمات ({rating.value} / {rating.best} · {rating.count}) مزامنة من آراء مستخدمي Google Maps بتاريخ {rating.syncedAtAr}، وحقوق النشر تعود لأصحابها الأصليين ولـ Google Maps.</span> <a href={googleMapsLink} target="_blank" rel="noopener noreferrer">عرض جميع التقييمات على Google Maps ↗</a></li>
           <li><strong>الصور:</strong> صور حقيقية من Wikimedia Commons: Nicola (ملكية عامة)، Redthunder22 (CC BY-SA 3.0)، Alaaeldeeb وAya abo elkasem (CC BY-SA 4.0).</li>
           <li><strong>الموقع والاتصال:</strong> العنوان والإحداثيات وبيانات الاتصال من {entity.fullName} على <a href={googleMapsLink} target="_blank" rel="noopener noreferrer">Google Maps ↗</a>.</li>
           <li><strong>التاريخ والسياحة:</strong> بوابة «اعرف بورسعيد» التابعة لمحافظة بورسعيد، و<a href={entity.govtTourismUrl} target="_blank" rel="noopener noreferrer">بوابة السياحة الرسمية في {entity.countryAr}</a>.</li>
