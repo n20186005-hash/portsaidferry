@@ -1,0 +1,217 @@
+---
+import '../styles/global.css';
+
+const siteUrl = Astro.site;
+const pagePath = '/';
+const absolute = (path: string) => siteUrl ? new URL(path, siteUrl).toString() : undefined;
+const canonical = absolute(pagePath);
+const ogImage = absolute('/images/og-card.png');
+const title = 'معدية بورسعيد | عبور قناة السويس إلى بورفؤاد';
+const description = 'دليل عربي عملي لتجربة معدية بورسعيد بين بورسعيد وبورفؤاد: الوصول، التكلفة، أفضل وقت، المواقف، المطاعم والمعالم القريبة.';
+const mapUrl = 'https://www.google.com/maps?q=7856%2BR8F%2C%20El-Gomhoreya%2C%20Port%20Said%2C%20Egypt&output=embed&hl=ar';
+const googleMapsLink = 'https://maps.app.goo.gl/xFw4TbUvqWshTacN9';
+const faq = [
+  ['هل عبور المعدية مجاني؟','المصادر السياحية الرسمية لمحافظة بورسعيد تصف المعدية بين بورسعيد وبورفؤاد بأنها مجانية. قد تتغير ترتيبات تشغيل المركبات أو المسارات، لذلك راجع التعليمات المعلنة في موقع العبور عند الوصول.'],
+  ['كم تستغرق الرحلة؟','العبور نفسه قصير ويستغرق عادة دقائق قليلة، بينما يتأثر إجمالي الوقت بحجم الانتظار وحركة الملاحة في قناة السويس.'],
+  ['هل يمكن عبور السيارات؟','تعمل معديات بورسعيد كوسيلة نقل للأفراد والمركبات. اتبع توجيهات الطاقم ومسارات الاصطفاف قبل الصعود.'],
+  ['ما أفضل وقت للتجربة؟','الصباح الباكر مناسب لضوء هادئ وازدحام أقل غالبًا، وقبل الغروب يمنحك مشهدًا بحريًا جميلًا. الضباب والرياح قد يغيران الرؤية.'],
+  ['هل توجد مواقف؟','المنطقة المحيطة بنقطة العبور حضرية ومزدحمة. الأفضل الوصول مبكرًا، واتباع أماكن الانتظار المسموح بها واللوحات المحلية بدل الاعتماد على الوقوف العشوائي.']
+];
+const attractionJsonLd = {
+  '@context':'https://schema.org',
+  '@type':['TouristAttraction','LocalBusiness'],
+  name:'Port Said Ferry',
+  alternateName:'معدية بورسعيد - بورفؤاد',
+  description,
+  ...(canonical ? {url: canonical} : {}),
+  ...(ogImage ? {image: ogImage} : {}),
+  address:{
+    '@type':'PostalAddress',
+    streetAddress:'7856+R8F، الجمهورية، الدائرة الجمركية بورسعيد',
+    addressLocality:'بورسعيد',
+    addressRegion:'محافظة بورسعيد',
+    postalCode:'8576001',
+    addressCountry:'EG'
+  },
+  geo:{'@type':'GeoCoordinates',latitude:31.260117,longitude:32.308510},
+  telephone:'+20 10 22982228',
+  openingHoursSpecification:[{'@type':'OpeningHoursSpecification',dayOfWeek':['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],opens:'00:00',closes:'23:59'}],
+  aggregateRating:{'@type':'AggregateRating',ratingValue:'4.6',reviewCount:'10200',bestRating:'5',worstRating:'1'},
+  isAccessibleForFree:true
+};
+const faqJsonLd = {
+  '@context':'https://schema.org',
+  '@type':'FAQPage',
+  mainEntity: faq.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))
+};
+---
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  {canonical && <link rel="canonical" href={canonical} />}
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  {canonical && <meta property="og:url" content={canonical} />}
+  {ogImage && <meta property="og:image" content={ogImage} />}
+  <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+  <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/icons/favicon-32.png" sizes="32x32" />
+  <link rel="icon" href="/icons/favicon-16.png" sizes="16x16" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" sizes="180x180" />
+  <script type="application/ld+json" set:html={JSON.stringify(attractionJsonLd)}></script>
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)}></script>
+</head>
+<body>
+  <header class="hero" id="top">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="معدية بورسعيد">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#eff9f7"/><path d="M12 38h40l-7 9H20z" fill="#0d708c"/><path d="M23 25h18v13H23z" fill="#06485f"/><path d="M28 18h8v7h-8z" fill="#ed7f33"/><path d="M14 52c7-4 12 4 18 0s11 4 18 0" fill="none" stroke="#0d708c" stroke-width="4" stroke-linecap="round"/></svg>
+        <span>معدية بورسعيد</span>
+      </a>
+      <nav class="navlinks" aria-label="التنقل الرئيسي">
+        <a href="#experience">التجربة</a><a href="#transport">الوصول</a><a href="#nearby">حولك</a><a href="#faq">الأسئلة</a><a href="#map">الخريطة</a>
+      </nav>
+    </div>
+    <div class="container hero-content">
+      <span class="pill">قناة السويس · بورسعيد ↔ بورفؤاد</span>
+      <h1>دقائق فوق<br/>ممرّ عالمي</h1>
+      <p>رحلة يومية بسيطة تحوّلت إلى واحدة من أكثر تجارب بورسعيد تميّزًا: عبور مباشر بالقارب بين ضفتي القناة، مع السفن التجارية والنوارس وقبة هيئة قناة السويس في المشهد.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href={googleMapsLink} target="_blank" rel="noreferrer">افتح الاتجاهات</a>
+        <a class="btn btn-ghost" href="#plan">خطّط للزيارة</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><strong>مجانية</strong><span>بحسب مصادر سياحة بورسعيد</span></div>
+        <div class="stat"><strong>على مدار اليوم</strong><span>تشغيل مستمر وفق تقارير محلية حديثة</span></div>
+        <div class="stat"><strong>أفراد + مركبات</strong><span>عبور عملي وسياحي</span></div>
+        <div class="stat"><strong>4.6 / 5</strong><span>نحو 10.2 ألف مراجعة منشورة</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="experience">
+      <div class="container story">
+        <div>
+          <div class="kicker">حكاية المعدية</div>
+          <h2>جزء من ذاكرة المدينة، لا مجرد وسيلة نقل</h2>
+          <p>ارتبطت المعدية تاريخيًا بنشأة بورفؤاد ونقل العاملين بين ضفتي القناة. واليوم تظل رابطًا يوميًا بين بورسعيد وبورفؤاد، بينما صارت الرحلة نفسها مشهدًا محببًا للزوار: ماء مفتوح، سفن عملاقة، نوارس، وخط أفق بحري لا يشبه أي مواصلة داخل مدينة.</p>
+          <div class="notice">معلومة عملية: حركة الملاحة والطقس قد تؤثر على الانتظار أو الرؤية. اتبع دائمًا تعليمات الطاقم بالموقع.</div>
+        </div>
+        <div class="photo" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/9/97/Suez_canal_departmental_building.jpg')" role="img" aria-label="معدية تعبر أمام مبنى هيئة قناة السويس"></div>
+      </div>
+    </section>
+
+    <section class="section" id="plan" style="background:#e6f2f1">
+      <div class="container">
+        <div class="kicker">خططها بسهولة</div>
+        <h2>ما تحتاج معرفته قبل الصعود</h2>
+        <div class="grid-3">
+          <article class="card info-card"><div class="icon">ج</div><h3>التذكرة / التكلفة</h3><p>العبور بين بورسعيد وبورفؤاد موصوف بأنه مجاني في بوابة السياحة الرسمية للمحافظة. لا تعتمد على أسعار قديمة للمواصلات المحيطة.</p></article>
+          <article class="card info-card"><div class="icon">☀</div><h3>أفضل وقت</h3><p>الصباح الباكر لضوء واضح وحركة أهدأ نسبيًا، أو قبل الغروب للمشهد الذهبي. الشتاء قد يجلب ضبابًا جميلًا لكنه يقلل الرؤية.</p></article>
+          <article class="card info-card"><div class="icon">⏱</div><h3>مدة مقترحة</h3><p>خصّص 30–60 دقيقة للتجربة والانتظار والتصوير. أضف وقتًا أطول إذا كنت ستكمل إلى بورفؤاد والمعالم القريبة.</p></article>
+          <article class="card info-card"><div class="icon">P</div><h3>معلومات الوقوف</h3><p>المنطقة المحيطة بالمعدية مركزية ومزدحمة. التزم بمناطق الوقوف المسموح بها ومسارات المركبات الخاصة بالصعود، وتجنب تعطيل بوابات التشغيل.</p></article>
+          <article class="card info-card"><div class="icon">≈</div><h3>الطقس والبحر</h3><p>الرياح والضباب يؤثران على راحة التصوير. ارتدِ طبقة خفيفة مقاومة للهواء في الأشهر الأبرد، واحمِ هاتفك من رذاذ الماء.</p></article>
+          <article class="card info-card"><div class="icon">◎</div><h3>أفضل لقطة</h3><p>قف في مكان يسمح به الطاقم مع خلفية بورفؤاد أو مبنى هيئة قناة السويس. لا تتجاوز الحواجز ولا تقف في مسار المركبات.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="transport">
+      <div class="container grid-2">
+        <div>
+          <div class="kicker">تفاصيل الوصول</div>
+          <h2>الوصول إلى نقطة العبور</h2>
+          <div class="route-line">
+            <div class="route-step"><h3>من وسط بورسعيد</h3><p>اتجه نحو منطقة الجمهورية والدائرة الجمركية عند الواجهة الشرقية للمدينة. استخدم رابط Google Maps المدرج في الصفحة للوصول إلى نقطة 7856+R8F.</p></div>
+            <div class="route-step"><h3>بسيارة أو تاكسي</h3><p>اطلب النزول عند «معدية بورسعيد – بورفؤاد». عند الاقتراب، راقب مسارات المركبات ولا تدخل منطقة التحميل إلا بتوجيه العاملين.</p></div>
+            <div class="route-step"><h3>مشياً</h3><p>من المنطقة المركزية والواجهة البحرية يمكن الوصول مشيًا حسب موقعك. الرصيف نفسه منطقة تشغيل، لذلك احترم الإشارات وممرات الركاب.</p></div>
+            <div class="route-step"><h3>بعد الوصول إلى بورفؤاد</h3><p>يمكنك متابعة الجولة إلى فيلات هيئة قناة السويس، المسجد الكبير، ميدان الملك فؤاد، أو جبال الملح بسيارة أجرة محلية.</p></div>
+          </div>
+        </div>
+        <div class="photo" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/9/9c/Ferry_in_the_fog.jpg')" role="img" aria-label="معدية بورسعيد وسط الضباب والنوارس"></div>
+      </div>
+    </section>
+
+    <section class="section" id="nearby" style="background:var(--night);color:#eef8f8">
+      <div class="container">
+        <div class="kicker">بعد العبور</div>
+        <h2>الأكل والمعالم القريبة</h2>
+        <div class="grid-2">
+          <div class="card info-card" style="color:var(--ink)"><h3>مأكولات بحرية قريبة</h3><p>تشتهر المنطقة بتجربة السمك والمأكولات البحرية. من الخيارات المعروفة في المدينة سوق السمك، حيث يختار الزائر السمك أو الجمبري ثم يطلب الشوي أو القلي. جرّب البوري، السبيط، الجمبري، والسلطات المصرية البسيطة.</p></div>
+          <div class="card info-card" style="color:var(--ink)"><h3>معالم قريبة</h3><p>مبنى هيئة قناة السويس التاريخي، حديقة فريال، فيلات بورفؤاد ذات الطابع الأوروبي، مسجد بورفؤاد الكبير، وجبال الملح من أكثر الإضافات المنطقية ليوم واحد.</p></div>
+        </div>
+        <div class="photo" style="margin-top:28px;min-height:390px;background-image:url('https://upload.wikimedia.org/wikipedia/commons/1/13/A_gull_flying_over_the_sea_at_the_ferry_area_of_Port_Said_near_the_entrance_of_the_Suez_Canal%2C_during_the_winter_migration_season.jpg')" role="img" aria-label="نوارس فوق مياه قناة السويس في منطقة المعدية"></div>
+      </div>
+    </section>
+
+    <section class="section" id="map">
+      <div class="container">
+        <div class="kicker">الموقع</div>
+        <h2>الخريطة</h2>
+        <div class="map-wrap card"><iframe src={mapUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="خريطة معدية بورسعيد"></iframe></div>
+        <p class="credits">العنوان: 7856+R8F، الجمهورية، الدائرة الجمركية بورسعيد، محافظة بورسعيد 8576001، مصر.</p>
+      </div>
+    </section>
+
+    <section class="section faq" id="faq" style="background:#e6f2f1">
+      <div class="container" style="max-width:900px">
+        <div class="kicker">الأسئلة الشائعة</div>
+        <h2>أسئلة شائعة</h2>
+        {faq.map(([q,a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container credits">
+        <h3>مصادر الصور والمعلومات</h3>
+        <p>صور حقيقية من Wikimedia Commons: Nicola (ملكية عامة)، Redthunder22 (CC BY-SA 3.0)، Alaaeldeeb وAya abo elkasem (CC BY-SA 4.0). معلومات التاريخ والسياحة من بوابة «اعرف بورسعيد» التابعة لمحافظة بورسعيد، مع معلومات موقع/اتصال ومراجعات مجمعة من أدلة الخرائط العامة. المعلومات التشغيلية قد تتغير.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="links"><button data-dialog="privacy">الخصوصية</button><button data-dialog="terms">الشروط</button><button data-dialog="cookies">إعدادات ملفات الارتباط</button></div>
+      <p>هذا موقع إرشادي مستقل وغير رسمي، ولا يمثل هيئة قناة السويس أو محافظة بورسعيد أو مشغّل المعديات.</p>
+    </div>
+  </footer>
+
+  <dialog id="privacy"><div class="dialog-body"><h3>سياسة الخصوصية</h3><p>لا يطلب الموقع تسجيل دخول ولا يخزن بيانات شخصية في قاعدة بيانات. إذا وافقت على التحليلات، يتم تحميل Google Analytics 4 لقياس الاستخدام بشكل مجمع. يمكنك رفض التحليلات أو تغيير قرارك من إعدادات ملفات الارتباط.</p><button class="smallbtn reject" data-close>إغلاق</button></div></dialog>
+  <dialog id="terms"><div class="dialog-body"><h3>شروط الاستخدام</h3><p>المحتوى لأغراض التخطيط السياحي العام. ساعات التشغيل والأسعار وحركة المركبات قد تتغير دون إشعار؛ اتبع التعليمات الرسمية في الموقع قبل اتخاذ قرار السفر.</p><button class="smallbtn reject" data-close>إغلاق</button></div></dialog>
+  <dialog id="cookies"><div class="dialog-body"><h3>إعدادات ملفات الارتباط</h3><p>يمكن تشغيل أو إيقاف ملفات التحليلات. ملفات الوظائف الضرورية تستخدم فقط لحفظ اختيارك.</p><div class="cookie-actions"><button class="smallbtn accept" data-consent="yes">السماح بالتحليلات</button><button class="smallbtn reject" data-consent="no">رفض التحليلات</button></div></div></dialog>
+  <div class="cookie-banner" id="cookie-banner"><strong>خصوصيتك أولاً</strong><p>نستخدم GA4 فقط بعد موافقتك لقياس زيارات الموقع بشكل مجمع.</p><div class="cookie-actions"><button class="smallbtn accept" data-consent="yes">موافق</button><button class="smallbtn reject" data-consent="no">بدون تحليلات</button></div></div>
+  <script is:inline>
+    const GA_ID = 'G-HXM22WWPKP';
+    const key = 'psf-analytics-consent';
+    const loadGa = () => {
+      if (window.__gaLoaded) return;
+      window.__gaLoaded = true;
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){dataLayer.push(arguments)};
+      gtag('js', new Date());
+      gtag('config', GA_ID, { anonymize_ip: true });
+    };
+    const setConsent = value => {
+      localStorage.setItem(key, value);
+      document.getElementById('cookie-banner')?.classList.remove('show');
+      if (value === 'yes') loadGa();
+      document.getElementById('cookies')?.close();
+    };
+    const consent = localStorage.getItem(key);
+    if (consent === 'yes') loadGa(); else if (!consent) document.getElementById('cookie-banner')?.classList.add('show');
+    document.querySelectorAll('[data-consent]').forEach(el => el.addEventListener('click', () => setConsent(el.dataset.consent)));
+    document.querySelectorAll('[data-dialog]').forEach(el => el.addEventListener('click', () => document.getElementById(el.dataset.dialog)?.showModal()));
+    document.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', () => el.closest('dialog')?.close()));
+  </script>
+</body>
+</html>
