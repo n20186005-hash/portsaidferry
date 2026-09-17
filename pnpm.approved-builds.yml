@@ -1,0 +1,7 @@
+version: 1
+approvedDependencies:
+  esbuild:
+    - 0.28.1
+    - 0.28.2
+  workerd:
+    - 1.20260916.1
