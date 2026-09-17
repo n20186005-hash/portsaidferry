@@ -21,8 +21,10 @@ img { max-width: 100%; display: block; }
 .grid-2 { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; }
 .pill { display:inline-flex; gap:.5rem; align-items:center; border:1px solid rgba(255,255,255,.35); background:rgba(4,22,29,.28); padding:10px 14px; border-radius:999px; backdrop-filter: blur(12px); }
-.hero { min-height: 92vh; color:white; position:relative; overflow:hidden; background: linear-gradient(110deg, rgba(4,22,29,.96), rgba(6,72,95,.74) 46%, rgba(6,72,95,.24)), url('https://upload.wikimedia.org/wikipedia/commons/e/ed/Faehre_Port_Said.jpg') center/cover no-repeat; }
-.hero:after { content:""; position:absolute; inset:auto 0 0; height:130px; background:linear-gradient(transparent,var(--foam)); }
+.hero { min-height: 92vh; color:white; position:relative; overflow:hidden; background: var(--canal-deep); }
+.hero:before { content:""; position:absolute; inset:0; z-index:1; background: linear-gradient(110deg, rgba(4,22,29,.96), rgba(6,72,95,.74) 46%, rgba(6,72,95,.24)); }
+.hero-img { position:absolute; inset:0; z-index:0; width:100%; height:100%; object-fit:cover; }
+.hero:after { content:""; position:absolute; inset:auto 0 0; height:130px; z-index:1; background:linear-gradient(transparent,var(--foam)); }
 .nav { position:relative; z-index:3; display:flex; align-items:center; justify-content:space-between; padding:20px 0; gap:20px; }
 .brand { display:flex; align-items:center; gap:12px; font-weight:900; }
 .brand svg { width:48px; height:48px; }
@@ -66,9 +68,33 @@ dialog::backdrop { background:rgba(4,22,29,.65); }
 .smallbtn { border:0; border-radius:12px; padding:10px 14px; font-weight:800; cursor:pointer; }
 .smallbtn.accept { background:var(--canal-deep); color:white; }
 .smallbtn.reject { background:#e8eeee; }
+.photo-img { width:100%; height:430px; object-fit:cover; border-radius:32px; display:block; border:1px solid rgba(255,255,255,.22); }
+.photo-wide { height:390px; margin-top:28px; }
+.breadcrumb { display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:.82rem; color:#cfe6e6; margin-bottom:14px; }
+.breadcrumb span[aria-hidden] { opacity:.6; }
+.h1-tagline { display:block; font-size:.4em; line-height:1.1; margin-top:.25em; color:#dff3f3; }
+.source-note { font-size:.8rem; line-height:1.8; color:#5b7079; margin-top:14px; }
+.hero-source { color:#d7ecec; }
+.hero-source a { color:white; text-decoration:underline; }
+.source-note span { display:block; }
+.rating-card { display:grid; grid-template-columns:auto 1fr; gap:32px; padding:34px; align-items:center; }
+.rating-score { text-align:center; min-width:190px; border-left:1px solid rgba(8,34,43,.12); padding-left:22px; }
+.rating-score strong { display:block; font-size:3.6rem; line-height:1; color:var(--canal-deep); }
+.rating-score > span { display:block; font-size:.85rem; color:#5b7079; margin-top:6px; }
+.stars { position:relative; display:inline-block; margin-top:10px; font-size:1.5rem; letter-spacing:.18rem; color:#cfdcdc; white-space:nowrap; }
+.stars > i { position:absolute; inset:0; overflow:hidden; color:var(--signal); font-style:normal; }
+.rating-count { font-size:.9rem; color:#42585f; margin:10px 0 0; }
+.rating-meta p { margin:0 0 12px; }
+.rating-meta .btn-ghost { border-color:rgba(8,34,43,.25); color:var(--canal-deep); background:rgba(8,34,43,.04); }
+.fact-list { margin:0; padding:0; list-style:none; display:grid; gap:10px; font-size:.92rem; line-height:1.8; }
+.fact-list li { border-bottom:1px dashed rgba(8,34,43,.15); padding-bottom:8px; }
+.source-list { margin:0; padding-right:18px; display:grid; gap:12px; }
+.source-list a { color:var(--canal-deep); text-decoration:underline; }
 @media (max-width: 820px) {
   .navlinks { display:none; }
-  .stats, .grid-3, .grid-2, .story { grid-template-columns:1fr; }
+  .stats, .grid-3, .grid-2, .story, .rating-card { grid-template-columns:1fr; }
+  .rating-score { border-left:0; padding-left:0; border-bottom:1px solid rgba(8,34,43,.12); padding-bottom:18px; }
+  .photo-img, .photo-wide { height:300px; }
   .hero { min-height:86vh; }
   .section { padding:64px 0; }
 }

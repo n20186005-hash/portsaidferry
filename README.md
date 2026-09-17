@@ -3,11 +3,19 @@
 موقع عربي أحادي الصفحة عن Port Said Ferry، مبني بـ Astro + Tailwind CSS + TypeScript ومهيأ للنشر على Cloudflare Workers كأصول ثابتة.
 
 ## إعداد الدومين
-المكان الوحيد للدومين هو `site` داخل `astro.config.mjs`، ويُغذّى من متغير البيئة `SITE_URL`. إذا لم يُضبط المتغير يستمر البناء بدون canonical مطلق وبدون sitemap، ولا يستخدم أي نطاق وهمي.
+المكان الوحيد للدومين هو `site` داخل `astro.config.mjs`، وقيمته الافتراضية `https://portsaidferry.com`، ويمكن تجاوزها بمتغير البيئة `SITE_URL`. بهذا يوجد دائماً `canonical` و`og:url` و`sitemap` حتى بدون ضبط أي متغير.
 
 ```bash
-SITE_URL="$YOUR_REAL_SITE_URL" pnpm build
+SITE_URL="https://portsaidferry.com" pnpm build
 ```
+
+## بيانات التقييم
+التقييم المعروض (4.6 من 5 و10,419 تقييمًا) مُزامَن من آراء مستخدمي Google Maps (سبتمبر 2026) ويظهر في الصفحة فقط مع ذكر المصدر وحقوق النشر، ولا يُدرج في JSON-LD. الرابط `https://maps.app.goo.gl/xFw4TbUvqWshTacN9` متاح في الهيدر وقسم التقييمات وقسم المصادر.
+
+## دعم PWA
+- `public/manifest.webmanifest` مع أيقونات `public/icons/icon-192.png` و`icon-512.png` و`maskable-512.png` و`favicon.svg`.
+- `public/sw.js` يُسجَّل من الصفحة: cache-first للأصول المحلية، وnetwork-first لطلبات التنقل مع رجوع إلى النسخة المخزنة عند انقطاع الشبكة.
+- `public/robots.txt` يعلن `https://portsaidferry.com/sitemap-index.xml`.
 
 ## التشغيل
 ```bash

@@ -6,38 +6,69 @@ const pagePath = '/';
 const absolute = (path: string) => siteUrl ? new URL(path, siteUrl).toString() : undefined;
 const canonical = absolute(pagePath);
 const ogImage = absolute('/images/og-card.png');
-const title = 'معدية بورسعيد | عبور قناة السويس إلى بورفؤاد';
-const description = 'دليل عربي عملي لتجربة معدية بورسعيد بين بورسعيد وبورفؤاد: الوصول، التكلفة، أفضل وقت، المواقف، المطاعم والمعالم القريبة.';
+const entity = {
+  domain: 'portsaidferry.com',
+  fullName: 'Port Said Ferry',
+  fullNameAr: 'معدية بورسعيد',
+  shortNameAr: 'معدية بورسعيد - بورفؤاد',
+  city: 'Port Said',
+  cityAr: 'بورسعيد',
+  province: 'Port Said Governorate',
+  provinceAr: 'محافظة بورسعيد',
+  country: 'Egypt',
+  countryAr: 'مصر',
+  countryCode: 'EG',
+  postalCode: '8576001',
+  latitude: 31.260117,
+  longitude: 32.308510,
+  streetAddress: '7856+R8F، الجمهورية، الدائرة الجمركية بورسعيد',
+  telephone: '+20 10 22982228',
+  mapsShareUrl: 'https://maps.app.goo.gl/xFw4TbUvqWshTacN9',
+  govtTourismUrl: 'https://www.egypt.travel/',
+  landmark1Ar: 'مبنى هيئة قناة السويس',
+  landmark1: 'Suez Canal Authority Building',
+  landmark2Ar: 'حديقة فريال وفيلات بورفؤاد',
+  landmark2: 'Ferial Garden & Port Fouad Villas'
+};
+const googleMapsLink = entity.mapsShareUrl;
 const mapUrl = 'https://www.google.com/maps?q=7856%2BR8F%2C%20El-Gomhoreya%2C%20Port%20Said%2C%20Egypt&output=embed&hl=ar';
-const googleMapsLink = 'https://maps.app.goo.gl/xFw4TbUvqWshTacN9';
+const rating = { value: '4.6', best: '5', count: '10,419', syncedAt: '2026 年 9 月', syncedAtAr: 'سبتمبر 2026' };
+const title = 'معدية بورسعيد Port Said Ferry (بورسعيد) - دليل الزائر والموقع | عبور قناة السويس إلى بورفؤاد';
+const description = 'دليل عربي عملي لتجربة Port Said Ferry (معدية بورسعيد) في بورسعيد، محافظة بورسعيد، مصر: الموقع على الخريطة، الوصول، التكلفة، أفضل وقت العبور، المواقف، المطاعم والمعالم القريبة.';
 const faq = [
+  ['أين تقع معدية بورسعيد (Port Said Ferry)؟','تقع المعدية في مدينة بورسعيد بمحافظة بورسعيد في مصر، عند نقطة العبور 7856+R8F في منطقة الجمهورية والدائرة الجمركية على الواجهة الشرقية للمدينة، وتربط بين بورسعيد وبورفؤاد عبر قناة السويس.'],
   ['هل عبور المعدية مجاني؟','المصادر السياحية الرسمية لمحافظة بورسعيد تصف المعدية بين بورسعيد وبورفؤاد بأنها مجانية. قد تتغير ترتيبات تشغيل المركبات أو المسارات، لذلك راجع التعليمات المعلنة في موقع العبور عند الوصول.'],
   ['كم تستغرق الرحلة؟','العبور نفسه قصير ويستغرق عادة دقائق قليلة، بينما يتأثر إجمالي الوقت بحجم الانتظار وحركة الملاحة في قناة السويس.'],
   ['هل يمكن عبور السيارات؟','تعمل معديات بورسعيد كوسيلة نقل للأفراد والمركبات. اتبع توجيهات الطاقم ومسارات الاصطفاف قبل الصعود.'],
   ['ما أفضل وقت للتجربة؟','الصباح الباكر مناسب لضوء هادئ وازدحام أقل غالبًا، وقبل الغروب يمنحك مشهدًا بحريًا جميلًا. الضباب والرياح قد يغيران الرؤية.'],
-  ['هل توجد مواقف؟','المنطقة المحيطة بنقطة العبور حضرية ومزدحمة. الأفضل الوصول مبكرًا، واتباع أماكن الانتظار المسموح بها واللوحات المحلية بدل الاعتماد على الوقوف العشوائي.']
+  ['هل توجد مواقف؟','المنطقة المحيطة بنقطة العبور حضرية ومزدحمة. الأفضل الوصول مبكرًا، واتباع أماكن الانتظار المسموح بها واللوحات المحلية بدل الاعتماد على الوقوف العشوائي.'],
+  ['هل التجربة مناسبة للعائلات؟','نعم، هي رحلة قصيرة ومناسبة لمعظم الأعمار، مع الانتباه لمرافقة الأطفال قرب الحواجز ومسارات المركبات واتباع تعليمات الطاقم.'],
+  ['ما أقرب المعالم بعد العبور؟','مبنى هيئة قناة السويس وحديقة فريال وفيلات بورفؤاد ومسجد بورفؤاد الكبير من أقرب الإضافات المنطقية ليوم واحد.']
 ];
 const attractionJsonLd = {
   '@context':'https://schema.org',
   '@type':['TouristAttraction','LocalBusiness'],
-  name:'Port Said Ferry',
-  alternateName:'معدية بورسعيد - بورفؤاد',
+  ...(canonical ? {'@id': `${canonical}#attraction`} : {}),
+  name:entity.fullName,
+  alternateName:[entity.fullNameAr, entity.shortNameAr, `${entity.cityAr} - ${entity.fullNameAr}`, 'Port Said – Port Fouad Ferry'],
   description,
   ...(canonical ? {url: canonical} : {}),
-  ...(ogImage ? {image: ogImage} : {}),
+  ...(ogImage ? {image:[ogImage]} : {}),
+  hasMap:entity.mapsShareUrl,
+  sameAs:[entity.mapsShareUrl, entity.govtTourismUrl],
   address:{
     '@type':'PostalAddress',
-    streetAddress:'7856+R8F، الجمهورية، الدائرة الجمركية بورسعيد',
-    addressLocality:'بورسعيد',
-    addressRegion:'محافظة بورسعيد',
-    postalCode:'8576001',
-    addressCountry:'EG'
+    streetAddress:entity.streetAddress,
+    addressLocality:entity.cityAr,
+    addressRegion:entity.provinceAr,
+    postalCode:entity.postalCode,
+    addressCountry:entity.countryCode
   },
-  geo:{'@type':'GeoCoordinates',latitude:31.260117,longitude:32.308510},
-  telephone:'+20 10 22982228',
+  geo:{'@type':'GeoCoordinates',latitude:entity.latitude,longitude:entity.longitude},
+  telephone:entity.telephone,
   openingHoursSpecification:[{'@type':'OpeningHoursSpecification',dayOfWeek:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],opens:'00:00',closes:'23:59'}],
-  aggregateRating:{'@type':'AggregateRating',ratingValue:'4.6',reviewCount:'10200',bestRating:'5',worstRating:'1'},
-  isAccessibleForFree:true
+  isAccessibleForFree:true,
+  ...(canonical ? {mainEntityOfPage:{'@type':'WebPage','@id':canonical}} : {})
 };
 const faqJsonLd = {
   '@context':'https://schema.org',
@@ -58,7 +89,17 @@ const faqJsonLd = {
   <meta property="og:type" content="website" />
   {canonical && <meta property="og:url" content={canonical} />}
   {ogImage && <meta property="og:image" content={ogImage} />}
+  <meta property="og:site_name" content="Port Said Ferry | معدية بورسعيد" />
+  {ogImage && <meta property="og:image:alt" content={`${entity.fullName} - ${entity.cityAr}، ${entity.countryAr}`} />}
   <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  {ogImage && <meta name="twitter:image" content={ogImage} />}
+  <meta name="theme-color" content="#06485f" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Port Said Ferry" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="/icons/favicon-32.png" sizes="32x32" />
   <link rel="icon" href="/icons/favicon-16.png" sizes="16x16" />
@@ -68,19 +109,23 @@ const faqJsonLd = {
 </head>
 <body>
   <header class="hero" id="top">
+    <img class="hero-img" src="https://upload.wikimedia.org/wikipedia/commons/e/ed/Faehre_Port_Said.jpg" alt={`${entity.fullName} (${entity.fullNameAr}) - view of the crossing in ${entity.city}, ${entity.country}`} loading="eager" decoding="async" />
     <div class="container nav">
       <a class="brand" href="#top" aria-label="معدية بورسعيد">
         <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#eff9f7"/><path d="M12 38h40l-7 9H20z" fill="#0d708c"/><path d="M23 25h18v13H23z" fill="#06485f"/><path d="M28 18h8v7h-8z" fill="#ed7f33"/><path d="M14 52c7-4 12 4 18 0s11 4 18 0" fill="none" stroke="#0d708c" stroke-width="4" stroke-linecap="round"/></svg>
         <span>معدية بورسعيد</span>
       </a>
       <nav class="navlinks" aria-label="التنقل الرئيسي">
-        <a href="#experience">التجربة</a><a href="#transport">الوصول</a><a href="#nearby">حولك</a><a href="#faq">الأسئلة</a><a href="#map">الخريطة</a>
+        <a href="#experience">التجربة</a><a href="#reviews">التقييمات</a><a href="#transport">الوصول</a><a href="#nearby">حولك</a><a href="#history">التاريخ</a><a href="#faq">الأسئلة</a><a href="#map">الخريطة</a><a href="#sources">المصادر</a>
       </nav>
     </div>
     <div class="container hero-content">
+      <nav class="breadcrumb" aria-label="مسار الموقع">
+        <span>{entity.fullName}</span><span aria-hidden="true">←</span><span>{entity.city}</span><span aria-hidden="true">←</span><span>{entity.province}</span><span aria-hidden="true">←</span><span>{entity.country}</span>
+      </nav>
       <span class="pill">قناة السويس · بورسعيد ↔ بورفؤاد</span>
-      <h1>دقائق فوق<br/>ممرّ عالمي</h1>
-      <p>رحلة يومية بسيطة تحوّلت إلى واحدة من أكثر تجارب بورسعيد تميّزًا: عبور مباشر بالقارب بين ضفتي القناة، مع السفن التجارية والنوارس وقبة هيئة قناة السويس في المشهد.</p>
+      <h1>{entity.fullNameAr} {entity.fullName} ({entity.cityAr})<span class="h1-tagline">دقائق فوق ممرّ عالمي</span></h1>
+      <p>مرحبًا بك في <strong>{entity.fullName}</strong>، المعروفة محليًا باسم <strong>{entity.shortNameAr}</strong> في قلب {entity.cityAr}، {entity.provinceAr}، {entity.countryAr}. رحلة يومية بسيطة تحوّلت إلى واحدة من أكثر تجارب بورسعيد تميّزًا: عبور مباشر بالقارب بين ضفتي القناة، مع السفن التجارية والنوارس وقبة هيئة قناة السويس في المشهد.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href={googleMapsLink} target="_blank" rel="noreferrer">افتح الاتجاهات</a>
         <a class="btn btn-ghost" href="#plan">خطّط للزيارة</a>
@@ -89,8 +134,12 @@ const faqJsonLd = {
         <div class="stat"><strong>مجانية</strong><span>بحسب مصادر سياحة بورسعيد</span></div>
         <div class="stat"><strong>على مدار اليوم</strong><span>تشغيل مستمر وفق تقارير محلية حديثة</span></div>
         <div class="stat"><strong>أفراد + مركبات</strong><span>عبور عملي وسياحي</span></div>
-        <div class="stat"><strong>4.6 / 5</strong><span>نحو 10.2 ألف مراجعة منشورة</span></div>
+        <div class="stat"><strong>{rating.value} / {rating.best}</strong><span>{rating.count} تقييمًا على Google Maps</span></div>
       </div>
+      <p class="source-note hero-source">
+        <span lang="ar">التقييم وعدد التقييمات من آراء مستخدمي Google Maps، آخر مزامنة {rating.syncedAtAr}.</span>
+        <span lang="zh">评分与评价数同步自谷歌地图（Google Maps）用户评价 · {rating.syncedAt} · <a href={googleMapsLink} target="_blank" rel="noopener noreferrer">点击查看谷歌地图全部评价↗</a></span>
+      </p>
     </div>
   </header>
 
@@ -98,12 +147,39 @@ const faqJsonLd = {
     <section class="section" id="experience">
       <div class="container story">
         <div>
-          <div class="kicker">حكاية المعدية</div>
-          <h2>جزء من ذاكرة المدينة، لا مجرد وسيلة نقل</h2>
+          <div class="kicker">عن {entity.fullName}</div>
+          <h2>About {entity.fullNameAr} {entity.fullName}: جزء من ذاكرة المدينة، لا مجرد وسيلة نقل</h2>
           <p>ارتبطت المعدية تاريخيًا بنشأة بورفؤاد ونقل العاملين بين ضفتي القناة. واليوم تظل رابطًا يوميًا بين بورسعيد وبورفؤاد، بينما صارت الرحلة نفسها مشهدًا محببًا للزوار: ماء مفتوح، سفن عملاقة، نوارس، وخط أفق بحري لا يشبه أي مواصلة داخل مدينة.</p>
+          <p class="entity-line">عند زيارة <strong>{entity.fullName}</strong> ({entity.shortNameAr})، يسهل على الزائر استكشاف معالم تاريخية ونقاط اهتمام قريبة، مثل <strong>{entity.landmark1Ar}</strong> و<strong>{entity.landmark2Ar}</strong>.</p>
           <div class="notice">معلومة عملية: حركة الملاحة والطقس قد تؤثر على الانتظار أو الرؤية. اتبع دائمًا تعليمات الطاقم بالموقع.</div>
         </div>
-        <div class="photo" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/9/97/Suez_canal_departmental_building.jpg')" role="img" aria-label="معدية تعبر أمام مبنى هيئة قناة السويس"></div>
+        <img class="photo-img" src="https://upload.wikimedia.org/wikipedia/commons/9/97/Suez_canal_departmental_building.jpg" alt={`${entity.fullName} (${entity.fullNameAr}) passing ${entity.landmark1} in ${entity.city}, ${entity.country}`} loading="lazy" decoding="async" />
+      </div>
+    </section>
+
+    <section class="section" id="reviews" style="background:#e6f2f1">
+      <div class="container">
+        <div class="kicker">تقييمات الزوّار</div>
+        <h2>تقييم {entity.fullNameAr} {entity.fullName} على Google Maps</h2>
+        <div class="rating-card card">
+          <div class="rating-score">
+            <strong>{rating.value}</strong>
+            <span>من {rating.best}</span>
+            <div class="stars" role="img" aria-label={`${rating.value} من ${rating.best}`}>★★★★★<i style={`width:${(Number(rating.value) / Number(rating.best)) * 100}%`}>★★★★★</i></div>
+            <p class="rating-count">{rating.count} تقييمًا من مستخدمي Google Maps</p>
+          </div>
+          <div class="rating-meta">
+            <p>يقدّم هذا القسم ملخصًا لأرقام التقييم المنشورة على Google Maps فقط، ولا يعرض نصوص المراجعات؛ جميع آراء المستخدمين معروضة في مصدرها الأصلي عبر الرابط أدناه.</p>
+            <p class="source-note">
+              <span lang="zh">同步自 Google 地图用户评价，同步时间 {rating.syncedAt}；版权归原作者与 Google 地图所有</span>
+              <span lang="ar">التقييمات منسوخة من آراء مستخدمي Google Maps، وقت المزامنة: {rating.syncedAtAr}؛ حقوق النشر تعود لأصحابها الأصليين ولـ Google Maps.</span>
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href={googleMapsLink} target="_blank" rel="noopener noreferrer" aria-label={`عرض جميع تقييمات ${entity.fullName} على Google Maps`}>在谷歌地图查看全部评价</a>
+              <a class="btn btn-ghost" href={googleMapsLink} target="_blank" rel="noopener noreferrer">عرض جميع التقييمات على Google Maps ↗</a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -126,7 +202,7 @@ const faqJsonLd = {
       <div class="container grid-2">
         <div>
           <div class="kicker">تفاصيل الوصول</div>
-          <h2>الوصول إلى نقطة العبور</h2>
+          <h2>Location &amp; How to Visit {entity.fullNameAr} في {entity.cityAr}: الوصول إلى نقطة العبور</h2>
           <div class="route-line">
             <div class="route-step"><h3>من وسط بورسعيد</h3><p>اتجه نحو منطقة الجمهورية والدائرة الجمركية عند الواجهة الشرقية للمدينة. استخدم رابط Google Maps المدرج في الصفحة للوصول إلى نقطة 7856+R8F.</p></div>
             <div class="route-step"><h3>بسيارة أو تاكسي</h3><p>اطلب النزول عند «معدية بورسعيد – بورفؤاد». عند الاقتراب، راقب مسارات المركبات ولا تدخل منطقة التحميل إلا بتوجيه العاملين.</p></div>
@@ -134,28 +210,55 @@ const faqJsonLd = {
             <div class="route-step"><h3>بعد الوصول إلى بورفؤاد</h3><p>يمكنك متابعة الجولة إلى فيلات هيئة قناة السويس، المسجد الكبير، ميدان الملك فؤاد، أو جبال الملح بسيارة أجرة محلية.</p></div>
           </div>
         </div>
-        <div class="photo" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/9/9c/Ferry_in_the_fog.jpg')" role="img" aria-label="معدية بورسعيد وسط الضباب والنوارس"></div>
+        <img class="photo-img" src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Ferry_in_the_fog.jpg" alt={`${entity.fullName} (${entity.fullNameAr}) in the fog with seagulls - ${entity.city}, ${entity.country}`} loading="lazy" decoding="async" />
       </div>
     </section>
 
     <section class="section" id="nearby" style="background:var(--night);color:#eef8f8">
       <div class="container">
         <div class="kicker">بعد العبور</div>
-        <h2>الأكل والمعالم القريبة</h2>
+        <h2>Landmarks &amp; Attractions Around {entity.fullName}: الأكل والمعالم القريبة</h2>
         <div class="grid-2">
           <div class="card info-card" style="color:var(--ink)"><h3>مأكولات بحرية قريبة</h3><p>تشتهر المنطقة بتجربة السمك والمأكولات البحرية. من الخيارات المعروفة في المدينة سوق السمك، حيث يختار الزائر السمك أو الجمبري ثم يطلب الشوي أو القلي. جرّب البوري، السبيط، الجمبري، والسلطات المصرية البسيطة.</p></div>
-          <div class="card info-card" style="color:var(--ink)"><h3>معالم قريبة</h3><p>مبنى هيئة قناة السويس التاريخي، حديقة فريال، فيلات بورفؤاد ذات الطابع الأوروبي، مسجد بورفؤاد الكبير، وجبال الملح من أكثر الإضافات المنطقية ليوم واحد.</p></div>
+          <div class="card info-card" style="color:var(--ink)"><h3>معالم قريبة</h3><p>مبنى هيئة قناة السويس التاريخي، حديقة فريال، فيلات بورفؤاد ذات الطابع الأوروبي، مسجد بورفؤاد الكبير، وجبال الملح من أكثر الإضافات المنطقية ليوم واحد. أقرب نقطتين للانطلاق هما {entity.landmark1Ar} و{entity.landmark2Ar}.</p></div>
         </div>
-        <div class="photo" style="margin-top:28px;min-height:390px;background-image:url('https://upload.wikimedia.org/wikipedia/commons/1/13/A_gull_flying_over_the_sea_at_the_ferry_area_of_Port_Said_near_the_entrance_of_the_Suez_Canal%2C_during_the_winter_migration_season.jpg')" role="img" aria-label="نوارس فوق مياه قناة السويس في منطقة المعدية"></div>
+        <img class="photo-img photo-wide" src="https://upload.wikimedia.org/wikipedia/commons/1/13/A_gull_flying_over_the_sea_at_the_ferry_area_of_Port_Said_near_the_entrance_of_the_Suez_Canal%2C_during_the_winter_migration_season.jpg" alt={`Seagulls over the Suez Canal near ${entity.fullName} (${entity.fullNameAr}) in ${entity.city}, ${entity.country}`} loading="lazy" decoding="async" />
+      </div>
+    </section>
+
+    <section class="section" id="history">
+      <div class="container grid-2">
+        <div>
+          <div class="kicker">التاريخ والأهمية</div>
+          <h2>History &amp; Significance of {entity.fullNameAr} {entity.fullName}</h2>
+          <p>ارتبطت معدية بورسعيد تاريخيًا بنشأة بورفؤاد على الضفة الشرقية للقناة وبنقل العاملين بين الضفتين، ثم أصبحت مع الوقت جزءًا من الحياة اليومية للمدينة أكثر من كونها معلمًا سياحيًا مستقلًا.</p>
+          <p>تكمن أهمية {entity.fullName} اليوم في أنها تجربة عبور حقيقية داخل ممرّ ملاحي عالمي: ماء مفتوح، سفن تجارية عابرة، نوارس، وخط أفق يجمع بين بورسعيد وبورفؤاد في رحلة لا تتعدى الدقائق، لكنها تلخّص علاقة المدينة بقناة السويس.</p>
+        </div>
+        <div class="card info-card">
+          <h3>بطاقة المعلم</h3>
+          <ul class="fact-list">
+            <li><strong>الاسم:</strong> {entity.fullName} · {entity.shortNameAr}</li>
+            <li><strong>المدينة / المحافظة:</strong> {entity.cityAr} · {entity.provinceAr}</li>
+            <li><strong>الدولة:</strong> {entity.countryAr} ({entity.countryCode})</li>
+            <li><strong>الرمز البريدي:</strong> {entity.postalCode}</li>
+            <li><strong>الإحداثيات:</strong> {entity.latitude}, {entity.longitude}</li>
+            <li><strong>الهاتف:</strong> <a href={`tel:${entity.telephone.replace(/\s/g, '')}`}>{entity.telephone}</a></li>
+            <li><strong>التقييم:</strong> {rating.value} / {rating.best} · {rating.count} تقييمًا على Google Maps</li>
+          </ul>
+          <p class="source-note"><span lang="ar">للمعلومات السياحية الرسمية، زر <a href={entity.govtTourismUrl} target="_blank" rel="noopener noreferrer">بوابة السياحة الرسمية في {entity.countryAr}</a>.</span></p>
+        </div>
       </div>
     </section>
 
     <section class="section" id="map">
       <div class="container">
         <div class="kicker">الموقع</div>
-        <h2>الخريطة</h2>
-        <div class="map-wrap card"><iframe src={mapUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="خريطة معدية بورسعيد"></iframe></div>
-        <p class="credits">العنوان: 7856+R8F، الجمهورية، الدائرة الجمركية بورسعيد، محافظة بورسعيد 8576001، مصر.</p>
+        <h2>خريطة {entity.fullNameAr} {entity.fullName} في {entity.cityAr}</h2>
+        <div class="map-wrap card">
+          <iframe src={mapUrl} width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title={`خريطة ${entity.fullName} - ${entity.cityAr}، ${entity.countryAr}`}></iframe>
+        </div>
+        <p class="credits">العنوان: {entity.streetAddress}، {entity.provinceAr} {entity.postalCode}، {entity.countryAr}. الإحداثيات: {entity.latitude}, {entity.longitude}.</p>
+        <p class="credits">للمعلومات السياحية الرسمية، تفضل بزيارة <a href={entity.govtTourismUrl} target="_blank" rel="noopener noreferrer">{entity.country} / {entity.province} Official Tourism Portal</a>. وللاتجاهات المباشرة، افتح <a href={googleMapsLink} target="_blank" rel="noopener noreferrer">{entity.fullName} على Google Maps ↗</a>.</p>
       </div>
     </section>
 
@@ -167,10 +270,17 @@ const faqJsonLd = {
       </div>
     </section>
 
-    <section class="section">
-      <div class="container credits">
-        <h3>مصادر الصور والمعلومات</h3>
-        <p>صور حقيقية من Wikimedia Commons: Nicola (ملكية عامة)، Redthunder22 (CC BY-SA 3.0)، Alaaeldeeb وAya abo elkasem (CC BY-SA 4.0). معلومات التاريخ والسياحة من بوابة «اعرف بورسعيد» التابعة لمحافظة بورسعيد، مع معلومات موقع/اتصال ومراجعات مجمعة من أدلة الخرائط العامة. المعلومات التشغيلية قد تتغير.</p>
+    <section class="section" id="sources" style="background:#e6f2f1">
+      <div class="container">
+        <div class="kicker">المصادر</div>
+        <h2>مصادر الصور والمعلومات</h2>
+        <ul class="source-list credits">
+          <li><strong>التقييم · 评价:</strong> <span lang="zh">评价 · 同步时间 {rating.syncedAt} · 同步自 Google 地图用户评价；版权归原作者与 Google 地图所有</span> <span lang="ar">التقييم وعدد التقييمات ({rating.value} / {rating.best} · {rating.count}) مزامنة من آراء مستخدمي Google Maps بتاريخ {rating.syncedAtAr}، وحقوق النشر تعود لأصحابها الأصليين ولـ Google Maps.</span> <a href={googleMapsLink} target="_blank" rel="noopener noreferrer">点击查看谷歌地图全部评价↗</a></li>
+          <li><strong>الصور:</strong> صور حقيقية من Wikimedia Commons: Nicola (ملكية عامة)، Redthunder22 (CC BY-SA 3.0)، Alaaeldeeb وAya abo elkasem (CC BY-SA 4.0).</li>
+          <li><strong>الموقع والاتصال:</strong> العنوان والإحداثيات وبيانات الاتصال من {entity.fullName} على <a href={googleMapsLink} target="_blank" rel="noopener noreferrer">Google Maps ↗</a>.</li>
+          <li><strong>التاريخ والسياحة:</strong> بوابة «اعرف بورسعيد» التابعة لمحافظة بورسعيد، و<a href={entity.govtTourismUrl} target="_blank" rel="noopener noreferrer">بوابة السياحة الرسمية في {entity.countryAr}</a>.</li>
+        </ul>
+        <p class="source-note"><span lang="ar">معلومات التشغيل قد تتغير؛ تحقّق دائمًا من التعليمات المعلنة في موقع العبور قبل التخطيط.</span></p>
       </div>
     </section>
   </main>
@@ -212,6 +322,13 @@ const faqJsonLd = {
     document.querySelectorAll('[data-consent]').forEach(el => el.addEventListener('click', () => setConsent(el.dataset.consent)));
     document.querySelectorAll('[data-dialog]').forEach(el => el.addEventListener('click', () => document.getElementById(el.dataset.dialog)?.showModal()));
     document.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', () => el.closest('dialog')?.close()));
+  </script>
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
   </script>
 </body>
 </html>

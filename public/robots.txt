@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://portsaidferry.com/sitemap-index.xml
