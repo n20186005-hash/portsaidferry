@@ -1,0 +1,226 @@
+---
+import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { entity, rating, mapEmbed } from '../data/site';
+import { content } from '../i18n';
+import type { Locale } from '../i18n';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const c = content[locale];
+const googleMapsLink = entity.mapsShareUrl;
+const mapUrl = mapEmbed(locale === 'ar' ? 'ar' : 'en');
+
+const attractionJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': ['TouristAttraction', 'LocalBusiness'],
+  '@id': `${Astro.site?.toString().replace(/\/$/, '')}${locale === 'ar' ? '/' : '/en/'}#attraction`,
+  name: entity.fullName,
+  alternateName: [entity.fullNameAr, entity.shortNameAr, `${entity.cityAr} - ${entity.fullNameAr}`, 'Port Said – Port Fouad Ferry'],
+  description: c.description,
+  url: locale === 'ar' ? `${Astro.site?.toString().replace(/\/$/, '')}/` : `${Astro.site?.toString().replace(/\/$/, '')}/en/`,
+  image: [`${Astro.site?.toString().replace(/\/$/, '')}/images/og-card.png`],
+  hasMap: entity.mapsShareUrl,
+  sameAs: [entity.mapsShareUrl, entity.govtTourismUrl],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: entity.streetAddress,
+    addressLocality: locale === 'ar' ? entity.cityAr : entity.city,
+    addressRegion: locale === 'ar' ? entity.provinceAr : entity.province,
+    postalCode: entity.postalCode,
+    addressCountry: entity.countryCode
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: entity.latitude, longitude: entity.longitude },
+  telephone: entity.telephone,
+  openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'], opens: '00:00', closes: '23:59' }],
+  isAccessibleForFree: true,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': locale === 'ar' ? `${Astro.site?.toString().replace(/\/$/, '')}/` : `${Astro.site?.toString().replace(/\/$/, '')}/en/` }
+};
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: c.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+};
+const jsonLd = [attractionJsonLd, faqJsonLd];
+---
+
+<BaseLayout locale={locale} content={c} jsonLd={jsonLd}>
+  <header class="hero" id="top">
+    <img class="hero-img" src="https://upload.wikimedia.org/wikipedia/commons/e/ed/Faehre_Port_Said.jpg" alt={`${entity.fullName} (${entity.fullNameAr}) - view of the crossing in ${entity.city}, ${entity.country}`} loading="eager" decoding="async" fetchpriority="high" />
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label={entity.fullNameAr}>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#eff9f7"/><path d="M12 38h40l-7 9H20z" fill="#0d708c"/><path d="M23 25h18v13H23z" fill="#06485f"/><path d="M28 18h8v7h-8z" fill="#ed7f33"/><path d="M14 52c7-4 12 4 18 0s11 4 18 0" fill="none" stroke="#0d708c" stroke-width="4" stroke-linecap="round"/></svg>
+        <span>{entity.fullNameAr}</span>
+      </a>
+      <nav class="navlinks" aria-label="navigation">
+        {c.nav.map((n) => <a href={n.href}>{n.label}</a>)}
+      </nav>
+      <a class="lang-switch" href={c.langSwitch.href} hreflang={locale === 'ar' ? 'en' : 'ar'}>{c.langSwitch.label}</a>
+    </div>
+    <div class="container hero-content">
+      <nav class="breadcrumb" aria-label="breadcrumb">
+        {c.breadcrumb.map((b, i) => (
+          <span>{b}{i < c.breadcrumb.length - 1 && <span aria-hidden="true"> ← </span>}</span>
+        ))}
+      </nav>
+      <span class="pill">{c.heroKicker}</span>
+      <h1>{c.h1}<span class="h1-tagline">{c.heroTagline}</span></h1>
+      <p>{c.heroIntro}</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href={googleMapsLink} target="_blank" rel="noreferrer">{c.ctaDirections}</a>
+        <a class="btn btn-ghost" href="#plan">{c.ctaPlan}</a>
+      </div>
+      <div class="stats">
+        {c.stats.map((s) => (
+          <div class="stat"><strong>{s.value}</strong><span>{s.label}</span></div>
+        ))}
+      </div>
+      <p class="source-note hero-source">
+        <span lang={locale}>{c.ratingNote.text} <a href={googleMapsLink} target="_blank" rel="noopener noreferrer">{c.ratingNote.linkText}</a></span>
+      </p>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="experience">
+      <div class="container story">
+        <div>
+          <div class="kicker">{c.expKicker}</div>
+          <h2>{c.expTitle}</h2>
+          <p>{c.expP1}</p>
+          <p class="entity-line">{c.expP2}</p>
+          <div class="notice">{c.expNotice}</div>
+        </div>
+        <img class="photo-img" src="https://upload.wikimedia.org/wikipedia/commons/9/97/Suez_canal_departmental_building.jpg" alt={`${entity.fullName} (${entity.fullNameAr}) passing ${entity.landmark1} in ${entity.city}, ${entity.country}`} loading="lazy" decoding="async" />
+      </div>
+    </section>
+
+    <section class="section" id="reviews" style="background:#e6f2f1">
+      <div class="container">
+        <div class="kicker">{c.revKicker}</div>
+        <h2>{c.revTitle}</h2>
+        <div class="rating-card card">
+          <div class="rating-score">
+            <strong>{rating.value}</strong>
+            <span>من {rating.best}</span>
+            <div class="stars" role="img" aria-label={`${rating.value} من ${rating.best}`}>★★★★★<i style={`width:${(Number(rating.value) / Number(rating.best)) * 100}%`}>★★★★★</i></div>
+            <p class="rating-count">{rating.count} تقييمًا على Google Maps</p>
+          </div>
+          <div class="rating-meta">
+            <p>{c.revMeta}</p>
+            <p class="source-note"><span lang={locale}>{c.ratingNote.text} <a href={googleMapsLink} target="_blank" rel="noopener noreferrer">{c.ratingNote.linkText}</a></span></p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href={googleMapsLink} target="_blank" rel="noopener noreferrer" aria-label={`${c.revCta}`}>{c.revCta}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="plan" style="background:#e6f2f1">
+      <div class="container">
+        <div class="kicker">{c.planKicker}</div>
+        <h2>{c.planTitle}</h2>
+        <div class="grid-3">
+          {c.planCards.map((card) => (
+            <article class="card info-card"><div class="icon">{card.icon}</div><h3>{card.title}</h3><p>{card.text}</p></article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="schedule" style="background:#e6f2f1">
+      <div class="container">
+        <div class="kicker">{c.schKicker}</div>
+        <h2>{c.schTitle}</h2>
+        <p class="schedule-intro">{c.schIntro}</p>
+        <div class="grid-2">
+          {c.schCards.map((card) => (
+            <article class="card info-card"><div class="icon">{card.icon}</div><h3>{card.title}</h3><p>{card.text}</p></article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="transport">
+      <div class="container grid-2">
+        <div>
+          <div class="kicker">{c.trKicker}</div>
+          <h2>{c.trTitle}</h2>
+          <div class="route-line">
+            {c.trSteps.map((step) => (
+              <div class="route-step"><h3>{step.title}</h3><p>{step.text}</p></div>
+            ))}
+          </div>
+        </div>
+        <img class="photo-img" src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Ferry_in_the_fog.jpg" alt={`${entity.fullName} (${entity.fullNameAr}) in the fog with seagulls - ${entity.city}, ${entity.country}`} loading="lazy" decoding="async" />
+      </div>
+    </section>
+
+    <section class="section" id="nearby" style="background:var(--night);color:#eef8f8">
+      <div class="container">
+        <div class="kicker">{c.nbKicker}</div>
+        <h2>{c.nbTitle}</h2>
+        <div class="grid-2">
+          {c.nbCards.map((card) => (
+            <div class="card info-card" style="color:var(--ink)"><h3>{card.title}</h3><p>{card.text}</p></div>
+          ))}
+        </div>
+        <img class="photo-img photo-wide" src="https://upload.wikimedia.org/wikipedia/commons/1/13/A_gull_flying_over_the_sea_at_the_ferry_area_of_Port_Said_near_the_entrance_of_the_Suez_Canal%2C_during_the_winter_migration_season.jpg" alt={`Seagulls over the Suez Canal near ${entity.fullName} (${entity.fullNameAr}) in ${entity.city}, ${entity.country}`} loading="lazy" decoding="async" />
+      </div>
+    </section>
+
+    <section class="section" id="history">
+      <div class="container grid-2">
+        <div>
+          <div class="kicker">{c.histKicker}</div>
+          <h2>{c.histTitle}</h2>
+          <p>{c.histP1}</p>
+          <p>{c.histP2}</p>
+        </div>
+        <div class="card info-card">
+          <h3>{c.factTitle}</h3>
+          <ul class="fact-list">
+            {c.facts.map((f) => (
+              <li><strong>{f.label}</strong> {f.value === entity.telephone ? <a href={`tel:${entity.telephoneHref}`}>{f.value}</a> : f.value}</li>
+            ))}
+          </ul>
+          <p class="source-note"><span lang={locale}>{c.govIntro} <a href={entity.govtTourismUrl} target="_blank" rel="noopener noreferrer">{c.govLink}</a>.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="map">
+      <div class="container">
+        <div class="kicker">{c.mapKicker}</div>
+        <h2>{c.mapTitle}</h2>
+        <div class="map-wrap card">
+          <iframe src={mapUrl} width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title={c.mapTitle}></iframe>
+        </div>
+        <p class="credits">{c.mapCreditAddress}</p>
+        <p class="credits">{c.mapCreditPrefix1} <a href={entity.govtTourismUrl} target="_blank" rel="noopener noreferrer">{c.mapCreditLink1}</a>{c.mapCreditMid}<a href={googleMapsLink} target="_blank" rel="noopener noreferrer">{c.mapCreditLink2}</a></p>
+      </div>
+    </section>
+
+    <section class="section faq" id="faq" style="background:#e6f2f1">
+      <div class="container" style="max-width:900px">
+        <div class="kicker">{c.faqKicker}</div>
+        <h2>{c.faqTitle}</h2>
+        {c.faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </section>
+
+    <section class="section" id="sources" style="background:#e6f2f1">
+      <div class="container">
+        <div class="kicker">{c.srcKicker}</div>
+        <h2>{c.srcTitle}</h2>
+        <ul class="source-list credits">
+          {c.sources.map((s) => (
+            <li><strong>{s.strong}:</strong> {s.text}{s.link && <a href={s.link} target="_blank" rel="noopener noreferrer">{s.linkText}</a>}</li>
+          ))}
+        </ul>
+        <p class="source-note"><span lang={locale}>{c.srcNote}</span></p>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

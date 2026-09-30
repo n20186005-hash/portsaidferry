@@ -1,0 +1,116 @@
+---
+import { entity } from '../data/site';
+import { localeMeta } from '../i18n';
+import type { Locale, Content } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  content: Content;
+  jsonLd: Record<string, unknown>[];
+}
+
+const { locale, content, jsonLd } = Astro.props;
+const meta = localeMeta[locale];
+
+const site = (Astro.site ?? new URL('https://portsaidferry.com')).toString().replace(/\/$/, '');
+const canonical = locale === 'ar' ? `${site}/` : `${site}/en/`;
+const ogImage = `${site}/images/og-card.png`;
+const alternates = [
+  { lang: 'ar', href: `${site}/` },
+  { lang: 'en', href: `${site}/en/` },
+  { lang: 'x-default', href: `${site}/` }
+];
+const brand = 'Port Said Ferry | معدية بورسعيد';
+---
+
+<!doctype html>
+<html lang={meta.htmlLang} dir={meta.dir}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{content.title}</title>
+  <meta name="description" content={content.description} />
+  <link rel="canonical" href={canonical} />
+  {alternates.map((a) => (
+    <link rel="alternate" hreflang={a.lang} href={a.href} />
+  ))}
+  <meta property="og:title" content={content.title} />
+  <meta property="og:description" content={content.description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:site_name" content={brand} />
+  <meta property="og:locale" content={meta.ogLocale} />
+  <meta property="og:image:alt" content={`${entity.fullName} - ${entity.cityAr}, ${entity.countryAr}`} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={content.title} />
+  <meta name="twitter:description" content={content.description} />
+  <meta name="twitter:image" content={ogImage} />
+  <meta name="theme-color" content="#06485f" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Port Said Ferry" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/icons/favicon-32.png" sizes="32x32" />
+  <link rel="icon" href="/icons/favicon-16.png" sizes="16x16" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" sizes="180x180" />
+  {jsonLd.map((block) => (
+    <script type="application/ld+json" set:html={JSON.stringify(block)}></script>
+  ))}
+</head>
+<body>
+  <slot />
+
+  <footer>
+    <div class="container">
+      <div class="links">
+        <button data-dialog="privacy">{content.privacyTitle}</button>
+        <button data-dialog="terms">{content.termsTitle}</button>
+        <button data-dialog="cookies">{content.cookiesTitle}</button>
+      </div>
+      <p>{content.footerText}</p>
+    </div>
+  </footer>
+
+  <dialog id="privacy"><div class="dialog-body"><h3>{content.privacyTitle}</h3><p>{content.privacyText}</p><button class="smallbtn reject" data-close>{content.dialogClose}</button></div></dialog>
+  <dialog id="terms"><div class="dialog-body"><h3>{content.termsTitle}</h3><p>{content.termsText}</p><button class="smallbtn reject" data-close>{content.dialogClose}</button></div></dialog>
+  <dialog id="cookies"><div class="dialog-body"><h3>{content.cookiesTitle}</h3><p>{content.cookiesText}</p><div class="cookie-actions"><button class="smallbtn accept" data-consent="yes">{content.consentYes}</button><button class="smallbtn reject" data-consent="no">{content.consentNo}</button></div></div></dialog>
+  <div class="cookie-banner" id="cookie-banner"><strong>{content.cookieBannerTitle}</strong><p>{content.cookieBannerText}</p><div class="cookie-actions"><button class="smallbtn accept" data-consent="yes">{content.consentYes}</button><button class="smallbtn reject" data-consent="no">{content.consentNo}</button></div></div>
+
+  <script is:inline>
+    const GA_ID = 'G-HXM22WWPKP';
+    const key = 'psf-analytics-consent';
+    const loadGa = () => {
+      if (window.__gaLoaded) return;
+      window.__gaLoaded = true;
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){dataLayer.push(arguments)};
+      gtag('js', new Date());
+      gtag('config', GA_ID, { anonymize_ip: true });
+    };
+    const setConsent = value => {
+      localStorage.setItem(key, value);
+      document.getElementById('cookie-banner')?.classList.remove('show');
+      if (value === 'yes') loadGa();
+      document.getElementById('cookies')?.close();
+    };
+    const consent = localStorage.getItem(key);
+    if (consent === 'yes') loadGa(); else if (!consent) document.getElementById('cookie-banner')?.classList.add('show');
+    document.querySelectorAll('[data-consent]').forEach(el => el.addEventListener('click', () => setConsent(el.dataset.consent)));
+    document.querySelectorAll('[data-dialog]').forEach(el => el.addEventListener('click', () => document.getElementById(el.dataset.dialog)?.showModal()));
+    document.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', () => el.closest('dialog')?.close()));
+  </script>
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

@@ -7,7 +7,12 @@ const site = process.env.SITE_URL?.trim() || 'https://portsaidferry.com';
 export default defineConfig({
   site,
   output: 'static',
-  integrations: site ? [sitemap()] : [],
+  integrations: site ? [sitemap({
+    i18n: {
+      defaultLocale: 'ar',
+      locales: { ar: 'ar', en: 'en' }
+    }
+  })] : [],
   vite: {
     plugins: [tailwindcss()]
   }

@@ -1,6 +1,11 @@
 # معدية بورسعيد — Astro site
 
-موقع عربي أحادي الصفحة عن Port Said Ferry، مبني بـ Astro + Tailwind CSS + TypeScript ومهيأ للنشر على Cloudflare Workers كأصول ثابتة.
+موقع ثنائي اللغة (عربي/إنجليزي) عن Port Said Ferry، مبني بـ Astro + Tailwind CSS + TypeScript ومهيأ للنشر على Cloudflare Workers كأصول ثابتة.
+
+- العربية: `/` (الافتراضية، و x-default).
+- English: `/en/`.
+
+الصفحتان تشتركان في نفس البيانات المحايدة (`src/data/site.ts`) والنصوص لكل لغة (`src/i18n.ts`)، عبر `BaseLayout.astro` (الـ head والـ SEO والـ hreflang) و`GuidePage.astro` (كل الأقسام). توجد أيضاً فقرة مخصصة «مواعيد العمل والأسعار» لالتقاط نيّات البحث عن المواعيد والتذاكر.
 
 ## إعداد الدومين
 المكان الوحيد للدومين هو `site` داخل `astro.config.mjs`، وقيمته الافتراضية `https://portsaidferry.com`، ويمكن تجاوزها بمتغير البيئة `SITE_URL`. بهذا يوجد دائماً `canonical` و`og:url` و`sitemap` حتى بدون ضبط أي متغير.
