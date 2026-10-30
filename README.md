@@ -1,35 +1,22 @@
-# معدية بورسعيد — Astro site
+# Port Said–Port Fouad ferry independent guide
 
-موقع ثنائي اللغة (عربي/إنجليزي) عن Port Said Ferry، مبني بـ Astro + Tailwind CSS + TypeScript ومهيأ للنشر على Cloudflare Workers كأصول ثابتة.
+Existing Arabic `/` and English `/en/` static Astro pages are retained, with locale-specific direction and shared content. No adapter or live weather/departure feature is added. A root asset Worker supplies canonical entrance redirects and localized true error responses before static assets.
 
-- العربية: `/` (الافتراضية، و x-default).
-- English: `/en/`.
+Use Node24.21.0 and pnpm12.4.2 with the existing committed frozen lock and native build allowances. The observed build/deploy flow is `pnpm run build` and plain `npx wrangler deploy`, project portsaidferry. Dependency versions and workspace graph are retained.
 
-الصفحتان تشتركان في نفس البيانات المحايدة (`src/data/site.ts`) والنصوص لكل لغة (`src/i18n.ts`)، عبر `BaseLayout.astro` (الـ head والـ SEO والـ hreflang) و`GuidePage.astro` (كل الأقسام). توجد أيضاً فقرة مخصصة «مواعيد العمل والأسعار» لالتقاط نيّات البحث عن المواعيد والتذاكر.
-
-## إعداد الدومين
-المكان الوحيد للدومين هو `site` داخل `astro.config.mjs`، وقيمته الافتراضية `https://portsaidferry.com`، ويمكن تجاوزها بمتغير البيئة `SITE_URL`. بهذا يوجد دائماً `canonical` و`og:url` و`sitemap` حتى بدون ضبط أي متغير.
-
-```bash
-SITE_URL="https://portsaidferry.com" pnpm build
+```sh
+pnpm install --frozen-lockfile
+pnpm run check
+pnpm run build
+npx wrangler dev --ip 127.0.0.1
 ```
 
-## بيانات التقييم
-التقييم المعروض (4.6 من 5 و10,419 تقييمًا) مُزامَن من آراء مستخدمي Google Maps (سبتمبر 2026) ويظهر في الصفحة فقط مع ذكر المصدر وحقوق النشر، ولا يُدرج في JSON-LD. الرابط `https://maps.app.goo.gl/xFw4TbUvqWshTacN9` متاح في الهيدر وقسم التقييمات وقسم المصادر.
+Current first/last crossing, interval and category-specific charges were not established. Historical tourism, temporary2020notices and2026infrastructure reporting are attributed with their limits, rather than becoming an unconditional schedule, free-access claim or live departure display. The west-bank Maps pin does not identify both boarding gates or prove an accessible complete crossing.
 
-## دعم PWA
-- `public/manifest.webmanifest` مع أيقونات `public/icons/icon-192.png` و`icon-512.png` و`maskable-512.png` و`favicon.svg`.
-- `public/sw.js` يُسجَّل من الصفحة: cache-first للأصول المحلية، وnetwork-first لطلبات التنقل مع رجوع إلى النسخة المخزنة عند انقطاع الشبكة.
-- `public/robots.txt` يعلن `https://portsaidferry.com/sitemap-index.xml`.
+Maps figures are dated third-party attribution, excluded from rating markup. Generic tourism institution homepages are background links, not same-entity identifiers. An unverified operator telephone is not published.
 
-## التشغيل
-```bash
-corepack enable
-CI=1 corepack pnpm install --frozen-lockfile
-pnpm check
-pnpm build
-pnpm deploy
-```
+Original symbolic illustrations replace unresolved external photo delivery; see public/images/CREDITS.txt. They are not photographs, actual vessel/berth/ramp designs or current-condition evidence. Historical source references remain in Git and review records.
 
-## ملاحظة الصور
-الموقع يستخدم صوراً فوتوغرافية حقيقية من Wikimedia Commons مع نسب الترخيص في الصفحة. تعذر نسخ الصور إلى الحزمة محلياً في بيئة الإنشاء الحالية بسبب حظر DNS الخارجي؛ لذلك بقيت روابط الصور الأصلية المباشرة في CSS. يمكن تنزيلها لاحقاً إلى `public/images/` وتبديل المسارات دون تغيير التصميم.
+Google Analytics is choice-controlled, with localStorage persistence, an explicit disable flag and consent state updates. Existing loaded scripts/cookies are not represented as removed on refusal. Hosting processes and potential independent hosting browser analytics are disclosed separately. Dialogs return focus to their trigger; native Escape behavior remains. Without script, navigation anchors remain available. The retired service worker deletes only this site's old cache namespace and stops intercepting requests.
+
+Local checks are not production acceptance. The preflight captured a successful root request and subsequent403responses for other routes; those production route/alias/error checks remain pending without any access-setting or user-agent workaround.

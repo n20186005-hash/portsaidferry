@@ -14,11 +14,7 @@ export const entity = {
   countryAr: 'مصر',
   countryCode: 'EG',
   postalCode: '8576001',
-  latitude: 31.260117,
-  longitude: 32.308510,
   streetAddress: '7856+R8F، الجمهورية، الدائرة الجمركية بورسعيد',
-  telephone: '+20 10 22982228',
-  telephoneHref: '+201022982228',
   mapsShareUrl: 'https://maps.app.goo.gl/xFw4TbUvqWshTacN9',
   govtTourismUrl: 'https://www.egypt.travel/',
   landmark1Ar: 'مبنى هيئة قناة السويس',
@@ -30,8 +26,8 @@ export const entity = {
 export const rating = {
   value: '4.6',
   best: '5',
-  count: '10,444',
-  syncedAtAr: 'سبتمبر 2026'
+  count: '10,502',
+  syncedAtAr: '29 أكتوبر 2026'
 };
 
 // Google Maps embed; hl is locale-aware and set by the page.

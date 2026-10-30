@@ -1,0 +1,5 @@
+---
+interface Props { english?: boolean; }
+const {english=false}=Astro.props;
+---
+<!doctype html><html lang={english?'en':'ar'} dir={english?'ltr':'rtl'}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex"/><title>{english?'Page not found | Port Said Ferry':'الصفحة غير موجودة | معدية بورسعيد'}</title><style>body{margin:0;background:#eff9f7;color:#08222b;font:1rem/1.8 Tahoma,Arial,sans-serif;padding:2rem}main{max-width:40rem;margin:12vh auto}a{color:#06485f}</style></head><body><main><h1>{english?'Page not found':'الصفحة غير موجودة'}</h1><p>{english?'This address does not exist in the independent ferry guide.':'هذا العنوان غير موجود في الدليل المستقل للمعدية.'}</p><a href={english?'/en/':'/'}>{english?'Return to guide':'العودة إلى الدليل'}</a></main></body></html>

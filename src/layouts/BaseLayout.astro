@@ -1,5 +1,5 @@
 ---
-import { entity } from '../data/site';
+import { visitorUI } from '../data/visitor-ui';
 import { localeMeta } from '../i18n';
 import type { Locale, Content } from '../i18n';
 
@@ -11,6 +11,7 @@ interface Props {
 
 const { locale, content, jsonLd } = Astro.props;
 const meta = localeMeta[locale];
+const u = visitorUI[locale];
 
 const site = (Astro.site ?? new URL('https://portsaidferry.com')).toString().replace(/\/$/, '');
 const canonical = locale === 'ar' ? `${site}/` : `${site}/en/`;
@@ -41,7 +42,7 @@ const brand = 'Port Said Ferry | معدية بورسعيد';
   <meta property="og:image" content={ogImage} />
   <meta property="og:site_name" content={brand} />
   <meta property="og:locale" content={meta.ogLocale} />
-  <meta property="og:image:alt" content={`${entity.fullName} - ${entity.cityAr}, ${entity.countryAr}`} />
+  <meta property="og:image:alt" content={locale === 'ar' ? 'رسم رمزي لدليل عبور بورسعيد–بورفؤاد، وليس صورة لمعدية فعلية' : 'Symbolic Port Said–Port Fouad guide graphic, not a photograph of an actual ferry'} />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={content.title} />
   <meta name="twitter:description" content={content.description} />
@@ -56,54 +57,96 @@ const brand = 'Port Said Ferry | معدية بورسعيد';
   <link rel="icon" href="/icons/favicon-16.png" sizes="16x16" />
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" sizes="180x180" />
   {jsonLd.map((block) => (
-    <script type="application/ld+json" set:html={JSON.stringify(block)}></script>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(block)}></script>
   ))}
 </head>
 <body>
+  <a class="skip-link" href="#main">{u.skip}</a>
   <slot />
 
   <footer>
     <div class="container">
       <div class="links">
-        <button data-dialog="privacy">{content.privacyTitle}</button>
-        <button data-dialog="terms">{content.termsTitle}</button>
-        <button data-dialog="cookies">{content.cookiesTitle}</button>
+        <button type="button" aria-haspopup="dialog" data-dialog="privacy">{content.privacyTitle}</button>
+        <button type="button" aria-haspopup="dialog" data-dialog="terms">{content.termsTitle}</button>
+        <button type="button" aria-haspopup="dialog" data-dialog="cookies">{content.cookiesTitle}</button>
       </div>
       <p>{content.footerText}</p>
     </div>
   </footer>
 
-  <dialog id="privacy"><div class="dialog-body"><h3>{content.privacyTitle}</h3><p>{content.privacyText}</p><button class="smallbtn reject" data-close>{content.dialogClose}</button></div></dialog>
-  <dialog id="terms"><div class="dialog-body"><h3>{content.termsTitle}</h3><p>{content.termsText}</p><button class="smallbtn reject" data-close>{content.dialogClose}</button></div></dialog>
-  <dialog id="cookies"><div class="dialog-body"><h3>{content.cookiesTitle}</h3><p>{content.cookiesText}</p><div class="cookie-actions"><button class="smallbtn accept" data-consent="yes">{content.consentYes}</button><button class="smallbtn reject" data-consent="no">{content.consentNo}</button></div></div></dialog>
-  <div class="cookie-banner" id="cookie-banner"><strong>{content.cookieBannerTitle}</strong><p>{content.cookieBannerText}</p><div class="cookie-actions"><button class="smallbtn accept" data-consent="yes">{content.consentYes}</button><button class="smallbtn reject" data-consent="no">{content.consentNo}</button></div></div>
+  <dialog id="privacy" aria-labelledby="privacy-title"><div class="dialog-body"><h3 id="privacy-title" tabindex="-1">{content.privacyTitle}</h3><p>{content.privacyText}</p>{u.privacy.map(text=><p>{text}</p>)}<p><a href="https://policies.google.com/privacy">Google privacy</a> · <a href="https://developers.cloudflare.com/web-analytics/about/">Cloudflare Web Analytics</a> · <a href="https://developers.cloudflare.com/web-analytics/data-metrics/">Cloudflare metrics</a></p><button class="smallbtn reject" data-close>{content.dialogClose}</button></div></dialog>
+  <dialog id="terms" aria-labelledby="terms-title"><div class="dialog-body"><h3 id="terms-title" tabindex="-1">{content.termsTitle}</h3><p>{content.termsText}</p><button class="smallbtn reject" data-close>{content.dialogClose}</button></div></dialog>
+  <dialog id="cookies" aria-labelledby="cookies-title"><div class="dialog-body"><h3 id="cookies-title" tabindex="-1">{content.cookiesTitle}</h3><p>{content.cookiesText}</p><p id="consent-status" role="status" aria-live="polite"></p><p id="storage-warning"></p><div class="cookie-actions"><button class="smallbtn accept" data-consent="yes">{content.consentYes}</button><button class="smallbtn reject" data-consent="no">{content.consentNo}</button><button type="button" class="smallbtn reject" data-close>{content.dialogClose}</button></div></div></dialog>
+  <div class="cookie-banner" id="cookie-banner"><strong>{content.cookieBannerTitle}</strong><p>{content.cookieBannerText}</p><p data-storage-warning></p><div class="cookie-actions"><button class="smallbtn accept" data-consent="yes">{content.consentYes}</button><button class="smallbtn reject" data-consent="no">{content.consentNo}</button></div></div>
 
-  <script is:inline>
-    const GA_ID = 'G-HXM22WWPKP';
-    const key = 'psf-analytics-consent';
-    const loadGa = () => {
-      if (window.__gaLoaded) return;
-      window.__gaLoaded = true;
-      const s = document.createElement('script');
-      s.async = true;
-      s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-      document.head.appendChild(s);
+  <script is:inline define:vars={{ labels: {allowed:u.statusAllowed,denied:u.statusDenied,unset:u.statusUnset,storageUnavailable:u.storageUnavailable} }}>
+    (() => {
+      const GA_ID = 'G-HXM22WWPKP', key = 'psf-analytics-consent';
+      const banner = document.getElementById('cookie-banner');
+      let choice = null, storageAvailable = true;
+      try { const saved = localStorage.getItem(key); choice = ['yes','no'].includes(saved) ? saved : null; }
+      catch { storageAvailable = false; }
       window.dataLayer = window.dataLayer || [];
-      window.gtag = function(){dataLayer.push(arguments)};
-      gtag('js', new Date());
-      gtag('config', GA_ID, { anonymize_ip: true });
-    };
-    const setConsent = value => {
-      localStorage.setItem(key, value);
-      document.getElementById('cookie-banner')?.classList.remove('show');
-      if (value === 'yes') loadGa();
-      document.getElementById('cookies')?.close();
-    };
-    const consent = localStorage.getItem(key);
-    if (consent === 'yes') loadGa(); else if (!consent) document.getElementById('cookie-banner')?.classList.add('show');
-    document.querySelectorAll('[data-consent]').forEach(el => el.addEventListener('click', () => setConsent(el.dataset.consent)));
-    document.querySelectorAll('[data-dialog]').forEach(el => el.addEventListener('click', () => document.getElementById(el.dataset.dialog)?.showModal()));
-    document.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', () => el.closest('dialog')?.close()));
+      window.gtag = window.gtag || function(){window.dataLayer.push(arguments)};
+      window.gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
+      const loadGa = () => {
+        if (window.__gaLoaded) return;
+        window.__gaLoaded = true;
+        const s = document.createElement('script');
+        s.async = true; s.dataset.guideGa = 'true';
+        s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+        document.head.appendChild(s);
+        window.gtag('js', new Date());
+        window.gtag('config', GA_ID);
+      };
+      function apply() {
+        window['ga-disable-'+GA_ID] = choice !== 'yes';
+        window.gtag('consent','update',{analytics_storage:choice==='yes'?'granted':'denied'});
+        if (choice==='yes') loadGa();
+        banner?.classList.toggle('show', choice===null);
+        const status = document.getElementById('consent-status');
+        if(status)status.textContent=choice==='yes'?labels.allowed:choice==='no'?labels.denied:labels.unset;
+        const warning=document.getElementById('storage-warning');
+        if(warning)warning.textContent=storageAvailable?'':labels.storageUnavailable;
+        document.querySelectorAll('[data-storage-warning]').forEach(node=>node.textContent=storageAvailable?'':labels.storageUnavailable);
+      }
+      function setConsent(value) {
+        if(!['yes','no'].includes(value))return;
+        const fromBanner=banner?.contains(document.activeElement);
+        choice=value;
+        try{localStorage.setItem(key,value);}catch{storageAvailable=false;}
+        apply();
+        const dialog=document.getElementById('cookies');
+        if(dialog?.open)dialog.close();
+        else if(fromBanner){const main=document.getElementById('main');if(main){main.setAttribute('tabindex','-1');main.focus({preventScroll:true});}}
+      }
+      const triggers=new Map();
+      document.querySelectorAll('[data-dialog]').forEach(button=>button.addEventListener('click',()=>{
+        const dialog=document.getElementById(button.dataset.dialog);
+        if(!dialog)return;
+        triggers.set(dialog,button);dialog.showModal();dialog.querySelector('h3')?.focus();
+      }));
+      document.querySelectorAll('dialog').forEach(dialog=>dialog.addEventListener('close',()=>{
+        const trigger=triggers.get(dialog);if(trigger?.isConnected)trigger.focus();triggers.delete(dialog);
+      }));
+      document.querySelectorAll('[data-close]').forEach(button=>button.addEventListener('click',()=>button.closest('dialog')?.close()));
+      document.querySelectorAll('[data-consent]').forEach(button=>button.addEventListener('click',()=>setConsent(button.dataset.consent)));
+      apply();
+    })();
+  </script>
+  <script is:inline>
+    (()=>{
+      const toggle=document.querySelector('.menu-toggle'),links=document.getElementById('site-navlinks');
+      if(!toggle||!links)return;
+      const mobile=window.matchMedia('(max-width: 820px)');
+      function close(focus=false){links.hidden=mobile.matches;toggle.setAttribute('aria-expanded','false');if(focus&&mobile.matches)toggle.focus();}
+      function sync(){const inLinks=links.contains(document.activeElement),onToggle=document.activeElement===toggle;toggle.hidden=!mobile.matches;close(inLinks);if(!mobile.matches&&onToggle)links.querySelector('a')?.focus();}
+      toggle.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')==='true';links.hidden=open;toggle.setAttribute('aria-expanded',String(!open));});
+      links.addEventListener('click',event=>{const link=event.target.closest('a[href^="#"]');if(!link||!mobile.matches)return;const target=document.getElementById(link.getAttribute('href').slice(1));close();if(target){target.setAttribute('tabindex','-1');target.focus({preventScroll:true});}});
+      document.addEventListener('keydown',event=>{if(event.key==='Escape'&&mobile.matches&&!links.hidden){event.preventDefault();close(true);}});
+      mobile.addEventListener('change',sync);sync();
+    })();
   </script>
   <script is:inline>
     if ('serviceWorker' in navigator) {

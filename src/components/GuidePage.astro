@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { visitorUI } from '../data/visitor-ui';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { entity, rating, mapEmbed } from '../data/site';
 import { content } from '../i18n';
@@ -8,32 +9,28 @@ import type { Locale } from '../i18n';
 interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const c = content[locale];
+const u = visitorUI[locale];
 const googleMapsLink = entity.mapsShareUrl;
 const mapUrl = mapEmbed(locale === 'ar' ? 'ar' : 'en');
 
 const attractionJsonLd = {
   '@context': 'https://schema.org',
-  '@type': ['TouristAttraction', 'LocalBusiness'],
-  '@id': `${Astro.site?.toString().replace(/\/$/, '')}${locale === 'ar' ? '/' : '/en/'}#attraction`,
+  '@type': 'TouristAttraction',
+  '@id': `${Astro.site?.toString().replace(/\/$/, '')}/#attraction`,
   name: entity.fullName,
   alternateName: [entity.fullNameAr, entity.shortNameAr, `${entity.cityAr} - ${entity.fullNameAr}`, 'Port Said – Port Fouad Ferry'],
   description: c.description,
   url: locale === 'ar' ? `${Astro.site?.toString().replace(/\/$/, '')}/` : `${Astro.site?.toString().replace(/\/$/, '')}/en/`,
   image: [`${Astro.site?.toString().replace(/\/$/, '')}/images/og-card.png`],
   hasMap: entity.mapsShareUrl,
-  sameAs: [entity.mapsShareUrl, entity.govtTourismUrl],
+  sameAs: [entity.mapsShareUrl],
   address: {
     '@type': 'PostalAddress',
-    streetAddress: entity.streetAddress,
     addressLocality: locale === 'ar' ? entity.cityAr : entity.city,
     addressRegion: locale === 'ar' ? entity.provinceAr : entity.province,
     postalCode: entity.postalCode,
     addressCountry: entity.countryCode
   },
-  geo: { '@type': 'GeoCoordinates', latitude: entity.latitude, longitude: entity.longitude },
-  telephone: entity.telephone,
-  openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'], opens: '00:00', closes: '23:59' }],
-  isAccessibleForFree: true,
   mainEntityOfPage: { '@type': 'WebPage', '@id': locale === 'ar' ? `${Astro.site?.toString().replace(/\/$/, '')}/` : `${Astro.site?.toString().replace(/\/$/, '')}/en/` }
 };
 const faqJsonLd = {
@@ -46,19 +43,20 @@ const jsonLd = [attractionJsonLd, faqJsonLd];
 
 <BaseLayout locale={locale} content={c} jsonLd={jsonLd}>
   <header class="hero" id="top">
-    <img class="hero-img" src="https://upload.wikimedia.org/wikipedia/commons/e/ed/Faehre_Port_Said.jpg" alt={`${entity.fullName} (${entity.fullNameAr}) - view of the crossing in ${entity.city}, ${entity.country}`} loading="eager" decoding="async" fetchpriority="high" />
+    <img class="hero-img" src="/images/concept-0.svg" alt={u.artAlt} width="1200" height="800" loading="eager" decoding="async" fetchpriority="high" />
     <div class="container nav">
-      <a class="brand" href="#top" aria-label={entity.fullNameAr}>
+      <a class="brand" href="#top" aria-label={u.brandHome}>
         <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#eff9f7"/><path d="M12 38h40l-7 9H20z" fill="#0d708c"/><path d="M23 25h18v13H23z" fill="#06485f"/><path d="M28 18h8v7h-8z" fill="#ed7f33"/><path d="M14 52c7-4 12 4 18 0s11 4 18 0" fill="none" stroke="#0d708c" stroke-width="4" stroke-linecap="round"/></svg>
-        <span>{entity.fullNameAr}</span>
+        <span>{locale === 'ar' ? entity.fullNameAr : entity.fullName}</span>
       </a>
-      <nav class="navlinks" aria-label="navigation">
+      <button class="menu-toggle" type="button" aria-controls="site-navlinks" aria-expanded="false" hidden>{u.menu}</button>
+      <nav class="navlinks" id="site-navlinks" aria-label={u.navigation}>
         {c.nav.map((n) => <a href={n.href}>{n.label}</a>)}
       </nav>
       <a class="lang-switch" href={c.langSwitch.href} hreflang={locale === 'ar' ? 'en' : 'ar'}>{c.langSwitch.label}</a>
     </div>
     <div class="container hero-content">
-      <nav class="breadcrumb" aria-label="breadcrumb">
+      <nav class="breadcrumb" aria-label={u.breadcrumb}>
         {c.breadcrumb.map((b, i) => (
           <span>{b}{i < c.breadcrumb.length - 1 && <span aria-hidden="true"> ← </span>}</span>
         ))}
@@ -75,13 +73,14 @@ const jsonLd = [attractionJsonLd, faqJsonLd];
           <div class="stat"><strong>{s.value}</strong><span>{s.label}</span></div>
         ))}
       </div>
+      <p class="art-note">{u.art} <a href="/images/CREDITS.txt">{u.artCredit}</a></p>
       <p class="source-note hero-source">
         <span lang={locale}>{c.ratingNote.text} <a href={googleMapsLink} target="_blank" rel="noopener noreferrer">{c.ratingNote.linkText}</a></span>
       </p>
     </div>
   </header>
 
-  <main>
+  <main id="main">
     <section class="section" id="experience">
       <div class="container story">
         <div>
@@ -91,7 +90,7 @@ const jsonLd = [attractionJsonLd, faqJsonLd];
           <p class="entity-line">{c.expP2}</p>
           <div class="notice">{c.expNotice}</div>
         </div>
-        <img class="photo-img" src="https://upload.wikimedia.org/wikipedia/commons/9/97/Suez_canal_departmental_building.jpg" alt={`${entity.fullName} (${entity.fullNameAr}) passing ${entity.landmark1} in ${entity.city}, ${entity.country}`} loading="lazy" decoding="async" />
+        <figure class="illustration"><img class="photo-img" src="/images/concept-1.svg" alt={u.artAlt} width="1200" height="800" loading="lazy" decoding="async" /><figcaption class="credits">{u.art} <a href="/images/CREDITS.txt">{u.artCredit}</a></figcaption></figure>
       </div>
     </section>
 
@@ -102,9 +101,9 @@ const jsonLd = [attractionJsonLd, faqJsonLd];
         <div class="rating-card card">
           <div class="rating-score">
             <strong>{rating.value}</strong>
-            <span>من {rating.best}</span>
-            <div class="stars" role="img" aria-label={`${rating.value} من ${rating.best}`}>★★★★★<i style={`width:${(Number(rating.value) / Number(rating.best)) * 100}%`}>★★★★★</i></div>
-            <p class="rating-count">{rating.count} تقييمًا على Google Maps</p>
+            <span>{u.outOf} {rating.best}</span>
+            <div class="stars" role="img" aria-label={`${rating.value} ${u.outOf} ${rating.best}`}>★★★★★<i style={`width:${(Number(rating.value) / Number(rating.best)) * 100}%`}>★★★★★</i></div>
+            <p class="rating-count">{rating.count} {u.reviews}</p>
           </div>
           <div class="rating-meta">
             <p>{c.revMeta}</p>
@@ -153,7 +152,7 @@ const jsonLd = [attractionJsonLd, faqJsonLd];
             ))}
           </div>
         </div>
-        <img class="photo-img" src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Ferry_in_the_fog.jpg" alt={`${entity.fullName} (${entity.fullNameAr}) in the fog with seagulls - ${entity.city}, ${entity.country}`} loading="lazy" decoding="async" />
+        <figure class="illustration"><img class="photo-img" src="/images/concept-2.svg" alt={u.artAlt} width="1200" height="800" loading="lazy" decoding="async" /><figcaption class="credits">{u.art} <a href="/images/CREDITS.txt">{u.artCredit}</a></figcaption></figure>
       </div>
     </section>
 
@@ -166,7 +165,7 @@ const jsonLd = [attractionJsonLd, faqJsonLd];
             <div class="card info-card" style="color:var(--ink)"><h3>{card.title}</h3><p>{card.text}</p></div>
           ))}
         </div>
-        <img class="photo-img photo-wide" src="https://upload.wikimedia.org/wikipedia/commons/1/13/A_gull_flying_over_the_sea_at_the_ferry_area_of_Port_Said_near_the_entrance_of_the_Suez_Canal%2C_during_the_winter_migration_season.jpg" alt={`Seagulls over the Suez Canal near ${entity.fullName} (${entity.fullNameAr}) in ${entity.city}, ${entity.country}`} loading="lazy" decoding="async" />
+        <figure class="illustration"><img class="photo-img photo-wide" src="/images/concept-3.svg" alt={u.artAlt} width="1200" height="800" loading="lazy" decoding="async" /><figcaption class="credits">{u.art} <a href="/images/CREDITS.txt">{u.artCredit}</a></figcaption></figure>
       </div>
     </section>
 
@@ -182,7 +181,7 @@ const jsonLd = [attractionJsonLd, faqJsonLd];
           <h3>{c.factTitle}</h3>
           <ul class="fact-list">
             {c.facts.map((f) => (
-              <li><strong>{f.label}</strong> {f.value === entity.telephone ? <a href={`tel:${entity.telephoneHref}`}>{f.value}</a> : f.value}</li>
+              <li><strong>{f.label}</strong> {f.value}</li>
             ))}
           </ul>
           <p class="source-note"><span lang={locale}>{c.govIntro} <a href={entity.govtTourismUrl} target="_blank" rel="noopener noreferrer">{c.govLink}</a>.</span></p>

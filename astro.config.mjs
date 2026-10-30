@@ -8,6 +8,7 @@ export default defineConfig({
   site,
   output: 'static',
   integrations: site ? [sitemap({
+    filter: (page) => !/\/404(?:\/|\.html)?$/.test(new URL(page).pathname),
     i18n: {
       defaultLocale: 'ar',
       locales: { ar: 'ar', en: 'en' }
