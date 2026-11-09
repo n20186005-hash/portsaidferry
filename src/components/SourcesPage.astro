@@ -1,0 +1,114 @@
+---
+import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { visitorUI } from '../data/visitor-ui';
+import { content, localeMeta } from '../i18n';
+import type { Locale } from '../i18n';
+import { TOPIC_UI } from '../data/topics';
+import { entity } from '../data/site';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+
+const c = content[locale];
+const u = visitorUI[locale];
+const ui = TOPIC_UI[locale];
+
+const site = (Astro.site ?? new URL('https://portsaidferry.com')).toString().replace(/\/$/, '');
+const homeUrl = locale === 'ar' ? `${site}/` : `${site}/en/`;
+const switchHref = locale === 'ar' ? `${site}/en/sources/` : `${site}/sources/`;
+const pageUrl = locale === 'ar' ? `${site}/sources/` : `${site}/en/sources/`;
+const inLang = localeMeta[locale].htmlLang;
+
+const pageContent = {
+  ...c,
+  title: locale === 'ar'
+    ? 'مصادر الصور والمعلومات | معدية بورسعيد'
+    : 'Image & information sources | Port Said Ferry',
+  description: locale === 'ar'
+    ? 'مصادر الصور التوثيقية والمعلومات المستخدمة في دليل معدية بورسعيد–بورفؤاد، مع روابط الجهات الرسمية وتنويه المصادر.'
+    : 'Sources for the historical documentary photographs and information used in the Port Said–Port Fouad ferry guide, with links to official sources and a source note.'
+};
+
+const webPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${pageUrl}#webpage`,
+  url: pageUrl,
+  name: c.srcTitle,
+  description: pageContent.description,
+  inLanguage: inLang,
+  isPartOf: { '@type': 'WebSite', '@id': `${site}/#website`, url: `${site}/`, name: 'Port Said Ferry | معدية بورسعيد' },
+  about: { '@id': `${site}/#attraction` }
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: ui.home, item: homeUrl },
+    { '@type': 'ListItem', position: 2, name: c.srcTitle, item: pageUrl }
+  ]
+};
+const jsonLd = [webPageLd, breadcrumbLd];
+---
+
+<BaseLayout locale={locale} content={pageContent} jsonLd={jsonLd} path="sources">
+  <header class="topic-hero">
+    <div class="container nav">
+      <a class="brand" href={homeUrl} aria-label={u.brandHome}>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#eff9f7"/><path d="M12 38h40l-7 9H20z" fill="#0d708c"/><path d="M23 25h18v13H23z" fill="#06485f"/><path d="M28 18h8v7h-8z" fill="#ed7f33"/><path d="M14 52c7-4 12 4 18 0s11 4 18 0" fill="none" stroke="#0d708c" stroke-width="4" stroke-linecap="round"/></svg>
+        <span>{locale === 'ar' ? 'معدية بورسعيد' : 'Port Said Ferry'}</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-controls="site-navlinks" aria-expanded="false" hidden>{u.menu}</button>
+      <nav class="navlinks" id="site-navlinks" aria-label={u.navigation}>
+        <a href={homeUrl}>{ui.home}</a>
+        <a href={`${homeUrl}#guides`}>{ui.allGuides}</a>
+        <a href={`${homeUrl}#map`}>{locale === 'ar' ? 'الخريطة' : 'Map'}</a>
+      </nav>
+      <a class="lang-switch" href={switchHref} hreflang={locale === 'ar' ? 'en' : 'ar'}>{ui.languageLabel}</a>
+    </div>
+    <div class="container topic-hero-content">
+      <nav class="breadcrumb" aria-label={ui.breadcrumb}>
+        <a href={homeUrl}>{ui.home}</a><span aria-hidden="true">‹</span><span>{c.srcTitle}</span>
+      </nav>
+      <span class="pill">{c.srcKicker}</span>
+      <h1>{c.srcTitle}</h1>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section" style="background:#e6f2f1">
+      <div class="container">
+        <ul class="source-list credits">
+          {c.sources.map((s) => (
+            <li><strong>{s.strong}:</strong> {s.text}{s.link && <a href={s.link} target="_blank" rel="noopener noreferrer">{s.linkText}</a>}</li>
+          ))}
+        </ul>
+        <p class="source-note"><span lang={locale}>{c.srcNote}</span></p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="kicker">{locale === 'ar' ? 'مصادر الخريطة' : 'Map sources'}</div>
+        <h2>{locale === 'ar' ? 'بيانات الخريطة والمواقع' : 'Map & location data'}</h2>
+        <p class="credits">{c.mapCreditPrefix1} <a href={entity.govtTourismUrl} target="_blank" rel="noopener noreferrer">{c.mapCreditLink1}</a>{c.mapCreditMid}<a href={entity.mapsShareUrl} target="_blank" rel="noopener noreferrer">{c.mapCreditLink2}</a></p>
+        <p class="credits">{c.mapCreditAddress}</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="kicker">{locale === 'ar' ? 'ترخيص الصور' : 'Photo licences'}</div>
+        <h2>{locale === 'ar' ? 'ترخيص الصور التوثيقية' : 'Historical photo licences'}</h2>
+        <p class="credits">{u.photoLabel} <a href="/images/CREDITS.txt">{u.photoCredit}</a></p>
+      </div>
+    </section>
+
+    <section class="section" style="background:#e6f2f1">
+      <div class="container">
+        <a class="btn btn-primary" href={homeUrl}>{ui.backHome}</a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

@@ -126,7 +126,7 @@ export const content: Record<Locale, Content> = {
         "label": "الخريطة"
       },
       {
-        "href": "#sources",
+        "href": "/sources/",
         "label": "المصادر"
       }
     ],
@@ -447,7 +447,7 @@ export const content: Record<Locale, Content> = {
         "label": "Map"
       },
       {
-        "href": "#sources",
+        "href": "/en/sources/",
         "label": "Sources"
       }
     ],

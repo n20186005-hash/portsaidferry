@@ -15,6 +15,7 @@ const googleMapsLink = entity.mapsShareUrl;
 const mapUrl = mapEmbed(locale === 'ar' ? 'ar' : 'en');
 const scheduleHref = locale === 'ar' ? '/ferry-schedule/' : '/en/ferry-schedule/';
 const faresHref = locale === 'ar' ? '/ferry-fares/' : '/en/ferry-fares/';
+const sourcesHref = locale === 'ar' ? '/sources/' : '/en/sources/';
 
 const attractionJsonLd = {
   '@context': 'https://schema.org',
@@ -204,7 +205,6 @@ const jsonLd = [attractionJsonLd, faqJsonLd];
           <iframe src={mapUrl} width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title={c.mapTitle}></iframe>
         </div>
         <p class="credits">{c.mapCreditAddress}</p>
-        <p class="credits">{c.mapCreditPrefix1} <a href={entity.govtTourismUrl} target="_blank" rel="noopener noreferrer">{c.mapCreditLink1}</a>{c.mapCreditMid}<a href={googleMapsLink} target="_blank" rel="noopener noreferrer">{c.mapCreditLink2}</a></p>
       </div>
     </section>
 
@@ -217,15 +217,11 @@ const jsonLd = [attractionJsonLd, faqJsonLd];
     </section>
 
     <section class="section" id="sources" style="background:#e6f2f1">
-      <div class="container">
+      <div class="container" style="text-align:center">
         <div class="kicker">{c.srcKicker}</div>
         <h2>{c.srcTitle}</h2>
-        <ul class="source-list credits">
-          {c.sources.map((s) => (
-            <li><strong>{s.strong}:</strong> {s.text}{s.link && <a href={s.link} target="_blank" rel="noopener noreferrer">{s.linkText}</a>}</li>
-          ))}
-        </ul>
-        <p class="source-note"><span lang={locale}>{c.srcNote}</span></p>
+        <p>{locale === 'ar' ? 'لعرض المصادر كاملةً — الصور التوثيقية والمعلومات وروابط الجهات الرسمية وتنويه المصادر — افتح صفحة المصادر المستقلة.' : 'For the full list — historical photographs, information sources, official links and the source note — open the dedicated sources page.'}</p>
+        <p><a class="btn btn-primary" href={sourcesHref}>{locale === 'ar' ? 'صفحة المصادر' : 'Open sources page'}</a></p>
       </div>
     </section>
   </main>
