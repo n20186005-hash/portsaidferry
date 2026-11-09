@@ -15,7 +15,7 @@ Current first/last crossing, interval and category-specific charges were not est
 
 Maps figures are dated third-party attribution, excluded from rating markup. Generic tourism institution homepages are background links, not same-entity identifiers. An unverified operator telephone is not published.
 
-Original symbolic illustrations replace unresolved external photo delivery; see public/images/CREDITS.txt. They are not photographs, actual vessel/berth/ramp designs or current-condition evidence. Historical source references remain in Git and review records.
+Original symbolic illustrations remain as brand graphics (`og-card.png`, `concept-*.svg`). On 5 November 2026 the four historical documentary photographs were restored from the site's original Wikimedia Commons references and are hosted locally; see `public/images/CREDITS.txt` for per-file attribution and reuse terms. Arabic and English alt text and captions now describe them as historical photographs rather than symbolic art. Neither the illustrations nor the photographs are evidence of present-day vessel/berth design, timetable or service.
 
 Google Analytics is choice-controlled, with localStorage persistence, an explicit disable flag and consent state updates. Existing loaded scripts/cookies are not represented as removed on refusal. Hosting processes and potential independent hosting browser analytics are disclosed separately. Dialogs return focus to their trigger; native Escape behavior remains. Without script, navigation anchors remain available. The retired service worker deletes only this site's old cache namespace and stops intercepting requests.
 

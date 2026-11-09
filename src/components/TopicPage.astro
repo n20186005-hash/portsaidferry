@@ -1,0 +1,165 @@
+---
+import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { visitorUI } from '../data/visitor-ui';
+import { content, localeMeta } from '../i18n';
+import type { Locale } from '../i18n';
+import { getTopic, getTopicContent, relatedTopics, topicPath, TOPIC_UI } from '../data/topics';
+import type { TopicContent, TopicDef, TopicLocale } from '../data/topic-types';
+
+interface Props { slug: string; locale: TopicLocale; }
+const { slug, locale } = Astro.props;
+
+const def = getTopic(slug);
+const t = getTopicContent(slug, locale);
+if (!def || !t) throw new Error(`Missing topic content: ${slug} (${locale})`);
+const defData: TopicDef = def;
+const tData: TopicContent = t;
+
+const ui = TOPIC_UI[locale];
+const u = visitorUI[locale];
+const pageContent = { ...content[locale as Locale], title: tData.title, description: tData.description };
+const site = (Astro.site ?? new URL('https://portsaidferry.com')).toString().replace(/\/$/, '');
+const pageUrl = `${site}${topicPath(slug, locale)}`;
+const homeUrl = locale === 'ar' ? `${site}/` : `${site}/en/`;
+const switchHref = topicPath(slug, locale === 'ar' ? 'en' : 'ar');
+const groupLabel = ui.groupLabels[defData.group];
+const inLang = localeMeta[locale as Locale].htmlLang;
+const isHistory = slug === 'history/port-said-ferry';
+const isItinerary = defData.group === 'itineraries';
+
+const relatedCards = relatedTopics(defData).map((r) => ({
+  href: topicPath(r.slug, locale),
+  card: getTopicContent(r.slug, locale)?.card ?? r.slug
+}));
+
+const webPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${pageUrl}#webpage`,
+  url: pageUrl,
+  name: tData.title,
+  description: tData.description,
+  inLanguage: inLang,
+  isPartOf: { '@type': 'WebSite', '@id': `${site}/#website`, url: `${site}/`, name: 'Port Said Ferry | معدية بورسعيد' },
+  about: { '@id': `${site}/#attraction` }
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: ui.home, item: homeUrl },
+    { '@type': 'ListItem', position: 2, name: tData.h1, item: pageUrl }
+  ]
+};
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: tData.faq.map(([q, a]) => ({
+    '@type': 'Question', name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a }
+  }))
+};
+const articleLd = isHistory ? {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  '@id': `${pageUrl}#article`,
+  headline: tData.h1,
+  description: tData.description,
+  inLanguage: inLang,
+  mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
+  author: { '@type': 'Organization', name: 'Port Said Ferry Independent Guide' },
+  datePublished: '2026-11-09',
+  dateModified: '2026-11-09'
+} : null;
+const tripLd = isItinerary ? {
+  '@context': 'https://schema.org',
+  '@type': 'TouristTrip',
+  '@id': `${pageUrl}#trip`,
+  name: tData.h1,
+  description: tData.description,
+  itinerary: {
+    '@type': 'ItemList',
+    itemListElement: tData.sections.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.title }))
+  }
+} : null;
+const jsonLd = [webPageLd, breadcrumbLd, faqLd, articleLd, tripLd].filter(Boolean) as Record<string, unknown>[];
+---
+
+<BaseLayout locale={locale as Locale} content={pageContent} jsonLd={jsonLd} path={slug}>
+  <header class="topic-hero">
+    <div class="container nav">
+      <a class="brand" href={homeUrl} aria-label={u.brandHome}>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#eff9f7"/><path d="M12 38h40l-7 9H20z" fill="#0d708c"/><path d="M23 25h18v13H23z" fill="#06485f"/><path d="M28 18h8v7h-8z" fill="#ed7f33"/><path d="M14 52c7-4 12 4 18 0s11 4 18 0" fill="none" stroke="#0d708c" stroke-width="4" stroke-linecap="round"/></svg>
+        <span>{locale === 'ar' ? 'معدية بورسعيد' : 'Port Said Ferry'}</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-controls="site-navlinks" aria-expanded="false" hidden>{u.menu}</button>
+      <nav class="navlinks" id="site-navlinks" aria-label={u.navigation}>
+        <a href={homeUrl}>{ui.home}</a>
+        <a href={`${homeUrl}#guides`}>{ui.allGuides}</a>
+        <a href={`${homeUrl}#map`}>{locale === 'ar' ? 'الخريطة' : 'Map'}</a>
+      </nav>
+      <a class="lang-switch" href={switchHref} hreflang={locale === 'ar' ? 'en' : 'ar'}>{ui.languageLabel}</a>
+    </div>
+    <div class="container topic-hero-content">
+      <nav class="breadcrumb" aria-label={ui.breadcrumb}>
+        <a href={homeUrl}>{ui.home}</a><span aria-hidden="true">‹</span><span>{groupLabel}</span><span aria-hidden="true">‹</span><span>{tData.card}</span>
+      </nav>
+      <span class="pill">{ui.heroKicker}</span>
+      <h1>{tData.h1}</h1>
+      <p>{tData.lead}</p>
+      <p class="topic-reviewed">{ui.reviewed}</p>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section topic-checks-section">
+      <div class="container">
+        <div class="card info-card topic-checks">
+          <h2>{ui.verifyTitle}</h2>
+          <ul class="fact-list">
+            {tData.facts.map(([label, value]) => <li><strong>{label}</strong> {value}</li>)}
+          </ul>
+          <p class="source-note">{ui.verifyNote}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section topic-body">
+      <div class="container topic-prose">
+        {tData.sections.map((s) => (
+          <article class="topic-section">
+            <h2>{s.title}</h2>
+            {s.body.map((p) => <p>{p}</p>)}
+            {s.bullets && <ul class="topic-bullets">{s.bullets.map((b) => <li>{b}</li>)}</ul>}
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="section topic-related" style="background:#e6f2f1">
+      <div class="container">
+        <h2>{ui.relatedTitle}</h2>
+        <div class="grid-3">
+          {relatedCards.map((r) => (
+            <a class="card info-card topic-card" href={r.href}><strong>{r.card}</strong><span>{ui.readMore} →</span></a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section faq topic-faq">
+      <div class="container" style="max-width:900px">
+        <h2>{ui.faqTitle}</h2>
+        {tData.faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </section>
+
+    <section class="section topic-back">
+      <div class="container">
+        <a class="btn btn-primary" href={homeUrl}>{ui.backHome}</a>
+        <a class="btn btn-ghost topic-btn-outline" href={`${homeUrl}#guides`}>{ui.allGuides}</a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

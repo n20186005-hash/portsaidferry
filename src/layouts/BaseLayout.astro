@@ -7,19 +7,21 @@ interface Props {
   locale: Locale;
   content: Content;
   jsonLd: Record<string, unknown>[];
+  path?: string;
 }
 
-const { locale, content, jsonLd } = Astro.props;
+const { locale, content, jsonLd, path = '' } = Astro.props;
 const meta = localeMeta[locale];
 const u = visitorUI[locale];
 
 const site = (Astro.site ?? new URL('https://portsaidferry.com')).toString().replace(/\/$/, '');
-const canonical = locale === 'ar' ? `${site}/` : `${site}/en/`;
+const suffix = path ? `/${path.replace(/^\/+|\/+$/g, '')}/` : '/';
+const canonical = locale === 'ar' ? `${site}${suffix}` : `${site}/en${suffix}`;
 const ogImage = `${site}/images/og-card.png`;
 const alternates = [
-  { lang: 'ar', href: `${site}/` },
-  { lang: 'en', href: `${site}/en/` },
-  { lang: 'x-default', href: `${site}/` }
+  { lang: 'ar', href: `${site}${suffix}` },
+  { lang: 'en', href: `${site}/en${suffix}` },
+  { lang: 'x-default', href: `${site}${suffix}` }
 ];
 const brand = 'Port Said Ferry | معدية بورسعيد';
 ---

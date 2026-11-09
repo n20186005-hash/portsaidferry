@@ -26,8 +26,9 @@ export const entity = {
 export const rating = {
   value: '4.6',
   best: '5',
-  count: '10,502',
-  syncedAtAr: '29 أكتوبر 2026'
+  count: '10,536',
+  syncedAtAr: '9 نوفمبر 2026',
+  syncedAtEn: '9 November 2026'
 };
 
 // Google Maps embed; hl is locale-aware and set by the page.

@@ -1,0 +1,33 @@
+---
+import { TOPICS, GROUP_ORDER, TOPIC_UI, getTopicContent, topicPath } from '../data/topics';
+import type { TopicLocale } from '../data/topic-types';
+
+interface Props { locale: TopicLocale; }
+const { locale } = Astro.props;
+const ui = TOPIC_UI[locale];
+const groups = GROUP_ORDER.map((group) => ({
+  label: ui.groupLabels[group],
+  items: TOPICS.filter((t) => t.group === group).map((t) => ({
+    href: topicPath(t.slug, locale),
+    card: getTopicContent(t.slug, locale)?.card ?? t.slug
+  }))
+}));
+---
+
+<section class="section" id="guides">
+  <div class="container">
+    <div class="kicker">{ui.heroKicker}</div>
+    <h2>{ui.guides}</h2>
+    <p class="schedule-intro">{ui.guidesIntro}</p>
+    <div class="guides-grid">
+      {groups.map((group) => (
+        <div class="card info-card guide-group">
+          <h3>{group.label}</h3>
+          <ul>
+            {group.items.map((item) => <li><a href={item.href}>{item.card}</a></li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

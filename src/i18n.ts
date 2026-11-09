@@ -21,6 +21,8 @@ export interface Content {
   heroIntro: string;
   ctaDirections: string;
   ctaPlan: string;
+  ctaSchedule: string;
+  ctaFares: string;
   stats: { value: string; label: string }[];
   ratingNote: { text: string; linkText: string };
   expKicker: string;
@@ -140,6 +142,8 @@ export const content: Record<Locale, Content> = {
     "heroIntro": "دليل مستقل للتخطيط لعبور القناة بين بورسعيد وبورفؤاد. تأكد من نقطة المغادرة العاملة حاليًا وترتيب العودة وأي رسوم قبل السفر؛ لا تعرض الصفحة رحلات حية.",
     "ctaDirections": "افتح الاتجاهات",
     "ctaPlan": "خطّط للزيارة",
+    "ctaSchedule": "تحقق من المواعيد",
+    "ctaFares": "تحقق من الرسوم",
     "stats": [
       {
         "value": "تحقق من الرسوم الحالية",
@@ -155,15 +159,15 @@ export const content: Record<Locale, Content> = {
       },
       {
         "value": "4.6 / 5",
-        "label": "10,502 تقييمًا على Google Maps"
+        "label": "10,536 تقييمًا على Google Maps"
       }
     ],
     "ratingNote": {
-      "text": "لقطة Google Maps · 29 أكتوبر 2026 · 4.6/5 من 10,502 تقييمًا. قد تتغير أرقام المصدر الخارجي؛ لا يجمع الموقع مراجعات ولا ينسخ نصوصها ولا يزامنها تلقائيًا.",
+      "text": "لقطة Google Maps · 9 نوفمبر 2026 · 4.6/5 من 10,536 تقييمًا. قد تتغير أرقام المصدر الخارجي؛ لا يجمع الموقع مراجعات ولا ينسخ نصوصها ولا يزامنها تلقائيًا.",
       "linkText": "عرض جميع التقييمات على Google Maps ↗"
     },
     "expKicker": "عن Port Said Ferry",
-    "expTitle": "About معدية بورسعيد Port Said Ferry: جزء من ذاكرة المدينة، لا مجرد وسيلة نقل",
+    "expTitle": "معدية بورسعيد (Port Said Ferry): جزء من ذاكرة المدينة، لا مجرد وسيلة نقل",
     "expP1": "ارتبطت المعدية تاريخيًا بنشأة بورفؤاد ونقل العاملين بين ضفتي القناة. واليوم تظل رابطًا يوميًا بين بورسعيد وبورفؤاد، بينما صارت الرحلة نفسها مشهدًا محببًا للزوار: ماء مفتوح، سفن عملاقة، نوارس، وخط أفق بحري لا يشبه أي مواصلة داخل مدينة.",
     "expP2": "خطط لزيارات منفصلة لمبنى هيئة قناة السويس وحديقة فريال وفيلات بورفؤاد، مع التحقق من ضفة كل موقع وقواعد دخوله. نقطة المعدية على الخريطة لا تثبت مسار مشي متصلًا.",
     "expNotice": "معلومة عملية: حركة الملاحة والطقس قد تؤثر على الانتظار أو الرؤية. اتبع دائمًا تعليمات الطاقم بالموقع.",
@@ -177,22 +181,22 @@ export const content: Record<Locale, Content> = {
       {
         "icon": "ج",
         "title": "التذكرة / التكلفة",
-        "text": "يتضمن برنامج سياحي غير مؤرخ للمحافظة ركوب المعدية ضمن أنشطة مجانية، لكنه ليس تعريفة حالية لكل راكب أو مركبة أو مسار. تأكد من أي رسوم لعبورك وفئة مركبتك لدى المشغّل؛ أجرة الحافلات العامة ليست تذكرة معدية."
+        "text": "خصص ميزانية لاحتمال رسم لكل عبور؛ فقرة سياحية غير مؤرخة تذكر المعذية مجانًا هي اقتراح لا تعريفة مؤكدة. أكّد المبلغ وفئة مركبتك لدى المشغّل قبل الدفع."
       },
       {
         "icon": "☀",
         "title": "أفضل وقت",
-        "text": "اختر الوقت بعد التأكد من التشغيل الحالي والطقس والمسار المناسب لمجموعتك. الضوء الجميل أو الصورة التاريخية لا يثبتان إتاحة الليل أو سهولة الصعود أو فتح الممرات."
+        "text": "اختر الضوء والموسم الأنسب لك — ساعة الذهب أو الأشهر الأبرد — ثم تأكد من التشغيل الفعلي لليوم قبل الذهاب. تشرح الأسئلة الشائعة ما هو مؤكد وما ليس كذلك."
       },
       {
         "icon": "⏱",
         "title": "مدة مقترحة",
-        "text": "لا نضمن وقتًا للعبور أو الانتظار. اترك وقتًا مرنًا للصعود وحركة الملاحة والطقس ووصلة العودة؛ مقترح الزيارة ليس موعد إبحار."
+        "text": "اجعل الخطة مرنة: الصعود وحركة الملاحة والطقس ورحلة العودة كلها تضيف عدم يقين، فلا تربط اليوم بجدول واحد."
       },
       {
         "icon": "P",
         "title": "معلومات الوقوف",
-        "text": "تحقق من مكان الانتظار أو النزول المسموح حاليًا ورسومه ومن مسار الأفراد أو المركبات الفعلي. لا تعطل بوابات التشغيل ولا تفترض وجود مكان محجوز."
+        "text": "ابحث عن مكان النزول أو الانتظار المسموح ومسار الأفراد أو المركبات الفعلي قبل الوصول؛ القواعد والرسوم تُحدَّد في الموقع، فلا تعطل بوابات التشغيل."
       },
       {
         "icon": "≈",
@@ -217,37 +221,37 @@ export const content: Record<Locale, Content> = {
       {
         "icon": "♻",
         "title": "الأسعار / التذاكر",
-        "text": "يتضمن برنامج سياحي غير مؤرخ للمحافظة ركوب المعدية ضمن أنشطة مجانية، لكنه ليس تعريفة حالية لكل راكب أو مركبة أو مسار. تأكد من أي رسوم لعبورك وفئة مركبتك لدى المشغّل؛ أجرة الحافلات العامة ليست تذكرة معدية."
+        "text": "تعامل مع أي تسعيرة منشورة كغير مؤكدة؛ المشغّل يحدد الرسم إن وُجد حسب المسار وفئة المركبة. اسأل عند المنفذ بدلًا من افتراض سعر محدد."
       },
       {
         "icon": "↔",
         "title": "أي ضفة وبوابة صعود أستخدم؟",
-        "text": "تشير نقطة الخرائط 7856+R8F إلى منطقة بورسعيد على الضفة الغربية عند الجمهورية والدائرة الجمركية، وليست نقطة للمحطتين معًا. تقع بورفؤاد على الضفة الشرقية. تصف تقارير رسمية لعام 2026 أعمالًا بميادين المعديات والمراسي، لكن يلزم تأكيد بوابات الصعود الحالية والتحويلات بالموقع. لا يتوفر هنا عنوان دقيق موثّق لبوابة الضفة الشرقية."
+        "text": "استخدم علامة الخريطة أدناه لمنطقة الصعود بالضفة الغربية عند الجمهورية والدائرة الجمركية؛ أكّد البوابة الفعلية في الموقع قبل الاصطفاف. الضفة المقابلة هي بورفؤاد."
       },
       {
         "icon": "◎",
         "title": "هل رحلة العبور كاملة مهيأة للكراسي المتحركة؟",
-        "text": "تخص علامة إمكانية الوصول في الخرائط مدخلًا مدرجًا، لا رحلة كاملة جرى التحقق منها. اسأل عن الضفتين والمعدية المخصصة ومنحدر الصعود وميله والفجوات والدرجات والمساحة والمساعدة. لم يتأكد مسار خالٍ من الدرج أو مرحاض مهيأ."
+        "text": "صعود مهيأ لذوي الاحتياجات غير مضمون؛ اسأل الطاقم عن المنحدرات والدرجات والفجوات والمساحة على متن المعذية قبل الاعتماد عليه."
       }
     ],
     "trKicker": "تفاصيل الوصول",
-    "trTitle": "Location & How to Visit معدية بورسعيد في بورسعيد: الوصول إلى نقطة العبور",
+    "trTitle": "معدية بورسعيد (Port Said Ferry): الوصول إلى نقطة العبور",
     "trSteps": [
       {
         "title": "من وسط بورسعيد",
-        "text": "تشير نقطة الخرائط 7856+R8F إلى منطقة بورسعيد على الضفة الغربية عند الجمهورية والدائرة الجمركية، وليست نقطة للمحطتين معًا. تقع بورفؤاد على الضفة الشرقية. تصف تقارير رسمية لعام 2026 أعمالًا بميادين المعديات والمراسي، لكن يلزم تأكيد بوابات الصعود الحالية والتحويلات بالموقع. لا يتوفر هنا عنوان دقيق موثّق لبوابة الضفة الشرقية."
+        "text": "ابدأ من وسط بورسعيد بالضفة الغربية؛ نقطة الصعود في منطقة الجمهورية والدائرة الجمركية. خطّط لمرحلة الوصول إلى بورفؤاد بالضفة الشرقية بشكل مستقل."
       },
       {
         "title": "بسيارة أو تاكسي",
-        "text": "تصف مواد هيئة قناة السويس في فبراير وأبريل 2026 عبور الأفراد والمركبات. لا يثبت ذلك قبول كل فئة في كل معدية أو بوابة. اسأل عن مسار المركبات الحالي وحدود الحجم والوزن والاصطفاف والعودة قبل الصعود بالسيارة."
+        "text": "اسقُد السيارة أو استقل تاكسيًا إلى حي الصعود بالضفة الغربية؛ أما الضفة المقابلة (بورفؤاد) فهي مرحلة مستقلة. عند المنفذ أسأل عن مسار المركبات الحالي وحدود الحجم والوزن والاصطفاف ورحلة العودة قبل الصعود بالسيارة."
       },
       {
         "title": "مشياً",
-        "text": "تخص علامة إمكانية الوصول في الخرائط مدخلًا مدرجًا، لا رحلة كاملة جرى التحقق منها. اسأل عن الضفتين والمعدية المخصصة ومنحدر الصعود وميله والفجوات والدرجات والمساحة والمساعدة. لم يتأكد مسار خالٍ من الدرج أو مرحاض مهيأ."
+        "text": "إن كنت تستخدم كرسيًا متحركًا، أكّد المنحدر/الميل والفجوات والدرجات والمساعدة المتاحة مع الطاقم قبل الصعود."
       },
       {
         "title": "بعد الوصول إلى بورفؤاد",
-        "text": "هذه وجهات مستقلة على ضفتين مختلفتين. تحقق من الطريق وقواعد الدخول والمواعيد لكل منها؛ لا نعد بمسار مشي قصير متصل أو بإكمالها في يوم واحد."
+        "text": "معالم بورفؤاد وجهات مستقلة؛ خطّط لكل زيارة ومسارها وقواعد دخولها وساعاتها بشكل مستقل."
       }
     ],
     "nbKicker": "بعد العبور",
@@ -286,7 +290,7 @@ export const content: Record<Locale, Content> = {
       },
       {
         "label": "التقييم:",
-        "value": "4.6/5 · 10,502 تقييمًا"
+        "value": "4.6/5 · 10,536 تقييمًا"
       }
     ],
     "govIntro": "للمعلومات السياحية الرسمية، زر",
@@ -295,9 +299,9 @@ export const content: Record<Locale, Content> = {
     "mapTitle": "خريطة معدية بورسعيد Port Said Ferry في بورسعيد",
     "mapCreditAddress": "العنوان: 7856+R8F، الجمهورية، الدائرة الجمركية بورسعيد، محافظة بورسعيد 8576001، مصر. ",
     "mapCreditPrefix1": "للمعلومات السياحية الرسمية، تفضل بزيارة",
-    "mapCreditLink1": "Egypt / Port Said Official Tourism Portal",
+    "mapCreditLink1": "البوابة السياحية الرسمية لمصر / بورسعيد",
     "mapCreditMid": " وللاتجاهات المباشرة، افتح ",
-    "mapCreditLink2": "Port Said Ferry على Google Maps ↗",
+    "mapCreditLink2": "معدية بورسعيد على Google Maps ↗",
     "faqKicker": "الأسئلة الشائعة",
     "faqTitle": "أسئلة شائعة",
     "faq": [
@@ -331,15 +335,15 @@ export const content: Record<Locale, Content> = {
       ],
       [
         "ما أقرب المعالم بعد العبور؟",
-        "هذه وجهات مستقلة على ضفتين مختلفتين. تحقق من الطريق وقواعد الدخول والمواعيد لكل منها؛ لا نعد بمسار مشي قصير متصل أو بإكمالها في يوم واحد."
+        "المعالم القريبة تقع على الضفتين؛ خطّط لكل مسار وقواعد دخول وساعات بشكل منفصل بدل مسار مشي واحد."
       ],
       [
         "ما مواعيد المعدية الحالية وفواصل المغادرة؟",
-        "لم يُتحقق من جدول تشغيل حالي معتمد من المشغّل أو أول وآخر رحلة أو فاصل المغادرة. لم تعرض خرائط Google ساعات في 29 أكتوبر 2026. لا تفترض خدمة على مدار 24 ساعة أو ليلًا من تقارير قديمة؛ راجع الإعلانات الحالية وتعليمات الطاقم عند نقطة الصعود الفعلية."
+        "لا يُنشر هنا جدول تشغيل مؤكد من المشغّل. راجع الإعلانات الحالية وتعليمات الطاقم عند نقطة الصعود قبل السفر."
       ],
       [
         "أي ضفة وبوابة صعود أستخدم؟",
-        "تشير نقطة الخرائط 7856+R8F إلى منطقة بورسعيد على الضفة الغربية عند الجمهورية والدائرة الجمركية، وليست نقطة للمحطتين معًا. تقع بورفؤاد على الضفة الشرقية. تصف تقارير رسمية لعام 2026 أعمالًا بميادين المعديات والمراسي، لكن يلزم تأكيد بوابات الصعود الحالية والتحويلات بالموقع. لا يتوفر هنا عنوان دقيق موثّق لبوابة الضفة الشرقية."
+        "لكل ضفة جهة صعود خاصة بها؛ أكّد البوابة الحالية في الموقع. علامة الخريطة تحدد منطقة الضفة الغربية فقط لا كلا المحطتين."
       ],
       [
         "هل رحلة العبور كاملة مهيأة للكراسي المتحركة؟",
@@ -351,7 +355,7 @@ export const content: Record<Locale, Content> = {
     "sources": [
       {
         "strong": "سجل المصادر",
-        "text": "رُوجعت المصادر في 29 أكتوبر 2026. للتاريخ الرسمي والبرامج السياحية غير المؤرخة وإعلانات التطوير المؤرخة نطاقات مختلفة؛ لا يثبت أي منها جدول إبحار حاليًا أو تعريفة لكل فئة."
+        "text": "ملاحظة النطاق: التاريخ الرسمي وبرامج السياحة غير المؤرخة وإعلانات البنية التحتية المؤرخة مختلفة النطاق؛ لا تثبت جدولًا حاليًا أو تعريفة بحسب الفئة. انظر قسم المواعيد أعلاه."
       },
       {
         "strong": "Suez Canal Authority · 4 February 2026",
@@ -373,13 +377,13 @@ export const content: Record<Locale, Content> = {
       },
       {
         "strong": "برنامج مجاني غير مؤرخ",
-        "text": "يتضمن برنامج سياحي غير مؤرخ للمحافظة ركوب المعدية ضمن أنشطة مجانية، لكنه ليس تعريفة حالية لكل راكب أو مركبة أو مسار. تأكد من أي رسوم لعبورك وفئة مركبتك لدى المشغّل؛ أجرة الحافلات العامة ليست تذكرة معدية.",
+        "text": "يذكر هذا البرنامج غير المؤرخ المعذية ضمن أنشطة مجانية؛ ليس تعريفة حالية لكل راكب أو مركبة. أكّد الرسم إن وُجد لدى المشغّل.",
         "link": "https://e3rafportsaid.portsaid.gov.eg/Home/EventDetails?eventid=24",
         "linkText": "Port Said Governorate"
       },
       {
         "strong": "Google Maps",
-        "text": "لقطة Google Maps · 29 أكتوبر 2026 · 4.6/5 من 10,502 تقييمًا. قد تتغير أرقام المصدر الخارجي؛ لا يجمع الموقع مراجعات ولا ينسخ نصوصها ولا يزامنها تلقائيًا.",
+        "text": "لقطة Google Maps · 9 نوفمبر 2026 · 4.6/5 من 10,536 تقييمًا. قد تتغير أرقام المصدر الخارجي؛ لا يجمع الموقع مراجعات ولا ينسخ نصوصها ولا يزامنها تلقائيًا.",
         "link": "https://maps.app.goo.gl/xFw4TbUvqWshTacN9",
         "linkText": "Google Maps"
       }
@@ -459,6 +463,8 @@ export const content: Record<Locale, Content> = {
     "heroIntro": "An independent planning guide to the Port Said–Port Fouad canal crossing. Confirm the currently operating departure point, return arrangement and any charges before travelling; this page does not show live sailings.",
     "ctaDirections": "Open directions",
     "ctaPlan": "Plan your visit",
+    "ctaSchedule": "Check schedules",
+    "ctaFares": "Check fares",
     "stats": [
       {
         "value": "Confirm current charge",
@@ -474,15 +480,15 @@ export const content: Record<Locale, Content> = {
       },
       {
         "value": "4.6 / 5",
-        "label": "10,502 Google Maps reviews"
+        "label": "10,536 Google Maps reviews"
       }
     ],
     "ratingNote": {
-      "text": "Google Maps snapshot · 29 October 2026 · 4.6/5 from 10,502 reviews. Third-party values may change; this guide does not collect reviews, copy their text or synchronize automatically.",
+      "text": "Google Maps snapshot · 9 November 2026 · 4.6/5 from 10,536 reviews. Third-party values may change; this guide does not collect reviews, copy their text or synchronize automatically.",
       "linkText": "View all reviews on Google Maps ↗"
     },
     "expKicker": "About Port Said Ferry",
-    "expTitle": "About معدية بورسعيد Port Said Ferry: part of the city's memory, not just transport",
+    "expTitle": "Port Said Ferry (معدية بورسعيد): part of the city’s memory, not just transport",
     "expP1": "The ferry has historically been tied to the founding of Port Fouad and to moving workers between the two banks of the canal. Today it remains a daily link between Port Said and Port Fouad, while the crossing itself has become a favourite scene for visitors: open water, giant ships, gulls, and a seascape unlike any in-city commute.",
     "expP2": "Plan separate visits to the Suez Canal Authority Building, Ferial Garden and Port Fouad villas, checking which bank each is on and its own entry rules. A ferry map pin does not establish a continuous walking route.",
     "expNotice": "Practical note: shipping traffic and weather may affect waiting time or visibility. Always follow the crew’s instructions on site.",
@@ -496,22 +502,22 @@ export const content: Record<Locale, Content> = {
       {
         "icon": "T",
         "title": "Ticket / cost",
-        "text": "An undated governorate tourism itinerary includes the ferry among free activities. That is not a current tariff for every pedestrian, vehicle or route. Confirm the charge, if any, for your crossing and vehicle category with the operator; public bus fares are not ferry tickets."
+        "text": "Budget for a possible per-crossing charge; an undated free-activity listing is a suggestion, not a confirmed fare. Confirm the amount and your vehicle class with the operator before paying."
       },
       {
         "icon": "☀",
         "title": "Best time",
-        "text": "Choose a time only after confirming present operation, forecast and the route for your group. Attractive light or a historical photo does not establish night access, smooth boarding or open paths."
+        "text": "Pick the light and season you want most — golden hour or cooler months — then confirm the day’s actual operation before going. The FAQ explains what is and isn’t verified."
       },
       {
         "icon": "⏱",
         "title": "Suggested duration",
-        "text": "No guaranteed crossing or waiting time is provided. Leave a flexible allowance for boarding, shipping movement, weather and your return connection; do not treat a suggested visit as a timed sailing."
+        "text": "Keep the plan loose: boarding, ship traffic, weather and the return trip all add uncertainty, so don’t anchor the day to a single schedule."
       },
       {
         "icon": "P",
         "title": "Parking info",
-        "text": "Check the currently permitted parking/drop-off area, charges and the actual passenger or vehicle lane. Do not obstruct operating gates or assume a reserved space."
+        "text": "Look up the permitted drop-off/parking and the live passenger or vehicle lane before you arrive; rules and charges are set on site, so don’t block operating gates."
       },
       {
         "icon": "≈",
@@ -536,17 +542,17 @@ export const content: Record<Locale, Content> = {
       {
         "icon": "♻",
         "title": "Fares / tickets",
-        "text": "An undated governorate tourism itinerary includes the ferry among free activities. That is not a current tariff for every pedestrian, vehicle or route. Confirm the charge, if any, for your crossing and vehicle category with the operator; public bus fares are not ferry tickets."
+        "text": "Treat any published fare as unconfirmed; the operator sets the charge, if any, by route and vehicle class. Ask at the booth rather than assuming a fixed price."
       },
       {
         "icon": "↔",
         "title": "Which bank and boarding gate should I use?",
-        "text": "The Maps pin 7856+R8F identifies the Port Said/west-bank area at El-Gomhoreya and the customs district; it is not a pin for both terminals. The other side is Port Fouad/east bank. Official 2026 reports describe work at ferry squares/berths, but current boarding gates and any temporary diversions need on-site confirmation. No precise east-bank gate address is verified here."
+        "text": "Use the map pin below for the west-bank boarding area at El-Gomhoreya/customs district; confirm the live gate on site before queuing. The far bank is Port Fouad."
       },
       {
         "icon": "◎",
         "title": "Is the complete crossing wheelchair accessible?",
-        "text": "The Maps accessibility label concerns a listed entrance, not a verified end-to-end journey. Ask about both banks, the assigned vessel, boarding ramp/slope, gaps, steps, onboard space and available assistance. A step-free route or accessible toilet has not been confirmed."
+        "text": "Accessible boarding is not guaranteed; ask the crew about ramps, steps, gaps and onboard space before relying on it."
       }
     ],
     "trKicker": "Getting here",
@@ -554,19 +560,19 @@ export const content: Record<Locale, Content> = {
     "trSteps": [
       {
         "title": "From central Port Said",
-        "text": "The Maps pin 7856+R8F identifies the Port Said/west-bank area at El-Gomhoreya and the customs district; it is not a pin for both terminals. The other side is Port Fouad/east bank. Official 2026 reports describe work at ferry squares/berths, but current boarding gates and any temporary diversions need on-site confirmation. No precise east-bank gate address is verified here."
+        "text": "Begin on the west bank in central Port Said; the boarding point is in the El-Gomhoreya/customs district. Plan the second leg to Port Fouad on the east bank separately."
       },
       {
         "title": "By car or taxi",
-        "text": "Suez Canal Authority material dated February and April 2026 describes crossings for people and vehicles. This does not confirm every vessel, gate or vehicle class. Ask about the current vehicle lane, size/weight restrictions, queuing rules and return crossing before driving aboard."
+        "text": "Drive or take a taxi to the west-bank boarding district; the far bank (Port Fouad) is a separate leg. At the booth, confirm the current vehicle lane, size/weight limits, queuing and your return crossing before driving aboard."
       },
       {
         "title": "On foot",
-        "text": "The Maps accessibility label concerns a listed entrance, not a verified end-to-end journey. Ask about both banks, the assigned vessel, boarding ramp/slope, gaps, steps, onboard space and available assistance. A step-free route or accessible toilet has not been confirmed."
+        "text": "If you use a wheelchair, confirm ramp/slope, gaps, steps and available assistance with the crew before boarding."
       },
       {
         "title": "After arriving in Port Fouad",
-        "text": "These are separate destinations on different banks. Check the actual route, entry rules and hours independently; no short continuous walk or single-day completion is promised."
+        "text": "Port Fouad sights are separate destinations; plan each visit and its own route, entry rules and hours independently."
       }
     ],
     "nbKicker": "After crossing",
@@ -605,14 +611,14 @@ export const content: Record<Locale, Content> = {
       },
       {
         "label": "Rating:",
-        "value": "4.6/5 · 10,502 reviews"
+        "value": "4.6/5 · 10,536 reviews"
       }
     ],
     "govIntro": "For official tourism information, visit the",
     "govLink": "Official Tourism Portal of Egypt",
     "mapKicker": "Location",
     "mapTitle": "Map of Port Said Ferry in Port Said",
-    "mapCreditAddress": "Address: 7856+R8F، الجمهورية، الدائرة الجمركية بورسعيد, Port Said Governorate 8576001, Egypt. ",
+    "mapCreditAddress": "Address: Plus Code 7856+R8F, Port Said, Port Said Governorate 8576001, Egypt. ",
     "mapCreditPrefix1": "For official tourism information, visit",
     "mapCreditLink1": "Egypt / Port Said Official Tourism Portal",
     "mapCreditMid": " and for direct directions, open ",
@@ -650,15 +656,15 @@ export const content: Record<Locale, Content> = {
       ],
       [
         "What are the nearest sights after crossing?",
-        "These are separate destinations on different banks. Check the actual route, entry rules and hours independently; no short continuous walk or single-day completion is promised."
+        "Nearby sights sit on both banks; plan each route, entry rules and hours separately rather than one combined walk."
       ],
       [
         "What are the ferry’s current hours and intervals?",
-        "A current operator-confirmed timetable, first/last crossing and departure interval were not established. Maps showed no hours on 29 October 2026. Do not assume 24-hour or night service from older reports; check the current notices and crew instructions at the actual boarding point."
+        "No operator-confirmed timetable is published on this site. Check current notices and crew instructions at the boarding point before you travel."
       ],
       [
         "Which bank and boarding gate should I use?",
-        "The Maps pin 7856+R8F identifies the Port Said/west-bank area at El-Gomhoreya and the customs district; it is not a pin for both terminals. The other side is Port Fouad/east bank. Official 2026 reports describe work at ferry squares/berths, but current boarding gates and any temporary diversions need on-site confirmation. No precise east-bank gate address is verified here."
+        "Either bank has its own boarding side; confirm the current gate on site. The map pin marks the west-bank area only, not both terminals."
       ],
       [
         "Is the complete crossing wheelchair accessible?",
@@ -670,7 +676,7 @@ export const content: Record<Locale, Content> = {
     "sources": [
       {
         "strong": "Source scope",
-        "text": "Sources checked 29 October 2026. Official history, undated tourism suggestions and dated infrastructure announcements have different scopes; none establishes a current sailing timetable or category-specific tariff."
+        "text": "Scope note: official history, undated tourism suggestions and dated infrastructure announcements differ in scope; none gives a current timetable or category tariff. See the schedule section above."
       },
       {
         "strong": "Suez Canal Authority · 4 February 2026",
@@ -692,13 +698,13 @@ export const content: Record<Locale, Content> = {
       },
       {
         "strong": "Undated free tourism itinerary",
-        "text": "An undated governorate tourism itinerary includes the ferry among free activities. That is not a current tariff for every pedestrian, vehicle or route. Confirm the charge, if any, for your crossing and vehicle category with the operator; public bus fares are not ferry tickets.",
+        "text": "This undated itinerary lists the ferry among free activities; it is not a current per-person or per-vehicle fare. Confirm the charge, if any, with the operator.",
         "link": "https://e3rafportsaid.portsaid.gov.eg/Home/EventDetails?eventid=24",
         "linkText": "Port Said Governorate"
       },
       {
         "strong": "Google Maps",
-        "text": "Google Maps snapshot · 29 October 2026 · 4.6/5 from 10,502 reviews. Third-party values may change; this guide does not collect reviews, copy their text or synchronize automatically.",
+        "text": "Google Maps snapshot · 9 November 2026 · 4.6/5 from 10,536 reviews. Third-party values may change; this guide does not collect reviews, copy their text or synchronize automatically.",
         "link": "https://maps.app.goo.gl/xFw4TbUvqWshTacN9",
         "linkText": "Google Maps"
       }
