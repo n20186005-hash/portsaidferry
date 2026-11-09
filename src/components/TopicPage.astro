@@ -7,6 +7,7 @@ import type { Locale } from '../i18n';
 import { getTopic, getTopicContent, relatedTopics, topicPath, TOPIC_UI } from '../data/topics';
 import type { TopicContent, TopicDef, TopicLocale } from '../data/topic-types';
 import { ATTRACTION_DETAILS } from '../data/attraction-detail';
+import { ATTRACTION_STORIES } from '../data/attraction-stories';
 
 interface Props { slug: string; locale: TopicLocale; }
 const { slug, locale } = Astro.props;
@@ -29,6 +30,7 @@ const inLang = localeMeta[locale as Locale].htmlLang;
 const isHistory = slug === 'history/port-said-ferry';
 const isItinerary = defData.group === 'itineraries';
 const detail = locale === 'en' ? ATTRACTION_DETAILS[slug] : undefined;
+const chapters = detail ? ATTRACTION_STORIES[slug] ?? [] : [];
 const mapHref = detail ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(detail.mapQuery)}` : '';
 const isEnrichedTarget = Boolean(ATTRACTION_DETAILS[slug]);
 
@@ -125,6 +127,9 @@ const jsonLd = [webPageLd, breadcrumbLd, faqLd, articleLd, tripLd].filter(Boolea
       <article class="topic-section"><h2>About {tData.card}</h2><p>{detail.about}</p><h3>Basic information</h3><dl class="topic-detail-facts"><div><dt>Destination</dt><dd>{tData.card}</dd></div><div><dt>Area</dt><dd>{detail.location}</dd></div><div><dt>Suggested visit</dt><dd>{detail.visit}</dd></div></dl></article>
       <article class="topic-section"><h2>Opening hours</h2><p>{detail.hours}</p><h2>Ticket prices</h2><p>{detail.tickets}</p><h2>How to get here</h2><ul class="topic-bullets">{detail.transport.map(v => <li>{v}</li>)}</ul></article>
       <article class="topic-section"><h2>Discover the charm</h2><div class="topic-charm-grid">{detail.charm.map(([title, body]) => <div><h3>{title}</h3><p>{body}</p></div>)}</div></article>
+      <div class="topic-deep-dive" aria-label="In-depth destination guide">
+        {chapters.map((chapter) => <article class="topic-section topic-story-chapter"><h2>{chapter.title}</h2>{chapter.paragraphs.map((p) => <p>{p}</p>)}</article>)}
+      </div>
       <article class="topic-section"><h2>Recommended visiting route</h2><ol class="topic-route">{detail.route.map(v => <li>{v}</li>)}</ol></article>
       <article class="topic-section"><h2>Visitor guidelines</h2><ul class="topic-bullets">{detail.guidelines.map(v => <li>{v}</li>)}</ul></article>
       <article class="topic-section"><h2>Photography spots</h2><div class="topic-charm-grid">{detail.photos.map(([title, body], i) => <div><h3>{i + 1}. {title}</h3><p>{body}</p></div>)}</div></article>
