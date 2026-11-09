@@ -6,6 +6,7 @@ import { content, localeMeta } from '../i18n';
 import type { Locale } from '../i18n';
 import { getTopic, getTopicContent, relatedTopics, topicPath, TOPIC_UI } from '../data/topics';
 import type { TopicContent, TopicDef, TopicLocale } from '../data/topic-types';
+import { ATTRACTION_DETAILS } from '../data/attraction-detail';
 
 interface Props { slug: string; locale: TopicLocale; }
 const { slug, locale } = Astro.props;
@@ -27,6 +28,9 @@ const groupLabel = ui.groupLabels[defData.group];
 const inLang = localeMeta[locale as Locale].htmlLang;
 const isHistory = slug === 'history/port-said-ferry';
 const isItinerary = defData.group === 'itineraries';
+const detail = locale === 'en' ? ATTRACTION_DETAILS[slug] : undefined;
+const mapHref = detail ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(detail.mapQuery)}` : '';
+const isEnrichedTarget = Boolean(ATTRACTION_DETAILS[slug]);
 
 const relatedCards = relatedTopics(defData).map((r) => ({
   href: topicPath(r.slug, locale),
@@ -107,26 +111,43 @@ const jsonLd = [webPageLd, breadcrumbLd, faqLd, articleLd, tripLd].filter(Boolea
       </nav>
       <span class="pill">{ui.heroKicker}</span>
       <h1>{tData.h1}</h1>
+      {detail && <p class="topic-tagline">{detail.tagline}</p>}
       <p>{tData.lead}</p>
-      <p class="topic-reviewed">{ui.reviewed}</p>
+      {detail && <div class="topic-hero-actions"><span>Visiting details: check locally</span><a class="btn btn-primary" href={mapHref} target="_blank" rel="noopener noreferrer">View location ↗</a></div>}
+      {!isEnrichedTarget && <p class="topic-reviewed">{ui.reviewed}</p>}
     </div>
   </header>
 
   <main id="main">
+    {detail && <section class="section topic-expanded"><div class="container topic-prose">
+      {detail.image && <img class="topic-feature-image" src={detail.image} alt={tData.card} loading="lazy" />}
+      <article class="topic-section"><h2>Discover {tData.card}</h2><p>{tData.lead}</p><h3>Visit tips</h3><p>{detail.visit}</p><h3>Highlights</h3><ul class="topic-bullets">{detail.highlights.map(v => <li>{v}</li>)}</ul></article>
+      <article class="topic-section"><h2>About {tData.card}</h2><p>{detail.about}</p><h3>Basic information</h3><dl class="topic-detail-facts"><div><dt>Destination</dt><dd>{tData.card}</dd></div><div><dt>Area</dt><dd>{detail.location}</dd></div><div><dt>Suggested visit</dt><dd>{detail.visit}</dd></div></dl></article>
+      <article class="topic-section"><h2>Opening hours</h2><p>{detail.hours}</p><h2>Ticket prices</h2><p>{detail.tickets}</p><h2>How to get here</h2><ul class="topic-bullets">{detail.transport.map(v => <li>{v}</li>)}</ul></article>
+      <article class="topic-section"><h2>Discover the charm</h2><div class="topic-charm-grid">{detail.charm.map(([title, body]) => <div><h3>{title}</h3><p>{body}</p></div>)}</div></article>
+      <article class="topic-section"><h2>Recommended visiting route</h2><ol class="topic-route">{detail.route.map(v => <li>{v}</li>)}</ol></article>
+      <article class="topic-section"><h2>Visitor guidelines</h2><ul class="topic-bullets">{detail.guidelines.map(v => <li>{v}</li>)}</ul></article>
+      <article class="topic-section"><h2>Photography spots</h2><div class="topic-charm-grid">{detail.photos.map(([title, body], i) => <div><h3>{i + 1}. {title}</h3><p>{body}</p></div>)}</div></article>
+      <article class="topic-section"><h2>Where to stay</h2><p>{detail.stay}</p></article>
+      <article class="topic-section"><h2>Visitor reviews</h2><p>Read recent visitor experiences and check location details on Google Maps. Ratings and reviews vary over time and are not reproduced here.</p><a href={mapHref} target="_blank" rel="noopener noreferrer">View on Google Maps ↗</a></article>
+      <article class="topic-section"><h2>Transport and location guide</h2><p>{detail.location}</p><p>{detail.transport.join(' ')}</p><a class="btn btn-primary" href={mapHref} target="_blank" rel="noopener noreferrer">Open directions on Google Maps ↗</a></article>
+    </div></section>}
+
     <section class="section topic-checks-section">
       <div class="container">
         <div class="card info-card topic-checks">
-          <h2>{ui.verifyTitle}</h2>
+          <h2>{isEnrichedTarget ? (locale === 'en' ? 'More practical details' : 'معلومات عملية إضافية') : ui.verifyTitle}</h2>
           <ul class="fact-list">
             {tData.facts.map(([label, value]) => <li><strong>{label}</strong> {value}</li>)}
           </ul>
-          <p class="source-note">{ui.verifyNote}</p>
+          {!isEnrichedTarget && <p class="source-note">{ui.verifyNote}</p>}
         </div>
       </div>
     </section>
 
     <section class="section topic-body">
       <div class="container topic-prose">
+        {detail && <h2>More from the original visitor guide</h2>}
         {tData.sections.map((s) => (
           <article class="topic-section">
             <h2>{s.title}</h2>
